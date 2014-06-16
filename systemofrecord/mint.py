@@ -1,12 +1,15 @@
 from Crypto.Hash import SHA256
-from .utils import load_keys
+from .utils import load_keys, create_keys
 
 
 class Mint(object):
 
-    def __init__(self, db, public_key, private_key):
+    def __init__(self, db, public_key = None, private_key = None):
         self.db = db
-        self.public_key, self.private_key = load_keys(public_key, private_key)
+        if public_key and private_key:
+            self.public_key, self.private_key = load_keys(public_key, private_key)
+        else:
+            self.public_key, self.private_key = create_keys()
 
     def __sign(self, hash, key):
         return self.private_key.sign(hash,'')
@@ -19,6 +22,7 @@ class Mint(object):
         #get current one from db using title_idenfier from incoming json
         #add link between incoming and current and then
         # hash and sign contents of incoming and save
+        pass
 
 
 

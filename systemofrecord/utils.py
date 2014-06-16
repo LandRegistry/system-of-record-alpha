@@ -27,8 +27,7 @@ def canonical_json(d):
 def create_keys():
     random_generator = Random.new().read
     key = RSA.generate(1024, random_generator)
-    print key.exportKey()
-    print key.publickey().exportKey()
+    return (key.publickey().exportKey(), key.exportKey())
 
 
 def sha256_sum(data):
