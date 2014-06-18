@@ -50,6 +50,17 @@ current title entry.
 curl -H "Accepts: application/json"  http://localhost:5000/titles/TN1234567
 ```
 
+Which should return:
+
+```
+{
+  "address": "1 low street",
+  "sha256": "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
+  "title_number": "TN1234567"
+}
+```
+
+
 ### Stuff I'm adding/changing v soon.
 
 Add in memory store so that local testing easy (i.e. no s3 bucket needed)
