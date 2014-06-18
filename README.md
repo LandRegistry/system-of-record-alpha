@@ -1,9 +1,9 @@
 
-# S3 backed storage of minted title entries
+## S3 backed storage of minted title entries
 
 Service to create new versions of a title, hashed and signed.
 
-# Try it out
+### Try it out
 
 Create an S3 bucket
 
@@ -30,7 +30,7 @@ a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428.json
 Subsequent writes for the same title number will  also write the file contents with sha256 sum as name and over write the head.json so that head.json will be the latest,
 current title entry.
 
-# Stuff I'm changing v soon.
+### Stuff I'm changing v soon.
 
 Add in memory store so that local testing easy (i.e. no s3 bucket needed)
 Check incoming title entry for integrity
