@@ -29,7 +29,6 @@ def create_keys():
     key = RSA.generate(1024, random_generator)
     return (key.publickey().exportKey(), key.exportKey())
 
-
 def sha256_sum(data):
     return SHA256.new(data).hexdigest()
 
