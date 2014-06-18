@@ -22,6 +22,11 @@ class Storage(object,):
        key.set_contents_from_string(json.dumps(data), encrypt_key=True)
        self.__set_new_head(data['title_number'], bucket, key_path)
 
+    def get(self, title_number):
+        bucket = self.__get_bucket()
+        key = '%s/head.json' % title_number
+        return bucket.get_key(key)
+
     def __set_new_head(self, title_number, source_bucket, source_key):
         destination_key  = "%s/%s.json" % (title_number,  'head')
         source_bucket.copy_key(destination_key, source_bucket.name,  source_key)
