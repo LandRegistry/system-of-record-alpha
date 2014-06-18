@@ -9,23 +9,21 @@ Create an S3 bucket
 
 set some environment variables:
 
-export AWS_KEY=YOUR_KEY
-export S3_BUCKET='some-bucket-name'
-export AWS_SECRET=YOUR_AWS_SECRET
+    export AWS_KEY=YOUR_KEY
+    export S3_BUCKET='some-bucket-name'
+    export AWS_SECRET=YOUR_AWS_SECRET
+    
+    pip install -r requirements
+    
+    ./manage.py runserver
 
-pip install -r requirements
+    curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567", "sha256":  "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428"}' http://localhost:5000/entries
 
- ./manage.py runserver
+That should write two entries to the S3 bucket with the keys ```TN1234567/head.json``` and another file with same content named ```a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428.json```
 
-curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567", "sha256sum":  "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428"}' http://localhost:5000/entries
+On S3:
 
-That should write two entries to the S3 bucket with the keys:
-
-TN1234567/head.json
-
-and another file with same content named:
-
-a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428.json
+![Document on S3](http://i.imgur.com/D4VzxpA.png)
 
 Subsequent writes for the same title number will  also write the file contents with sha256 sum as name and over write the head.json so that head.json will be the latest,
 current title entry.
