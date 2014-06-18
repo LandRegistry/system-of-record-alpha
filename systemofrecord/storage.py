@@ -27,6 +27,15 @@ class Storage(object,):
         key = '%s/head.json' % title_number
         return bucket.get_key(key)
 
+    def list_titles(self):
+        bucket = self.__get_bucket()
+        titles = bucket.list()
+        latest_titles = []
+        for title in titles:
+            if 'head.json' in title.name:
+                latest_titles.append(title.generate_url(expires_in=6000))
+        return latest_titles
+
     def __set_new_head(self, title_number, source_bucket, source_key):
         destination_key  = "%s/%s.json" % (title_number,  'head')
         source_bucket.copy_key(destination_key, source_bucket.name,  source_key)

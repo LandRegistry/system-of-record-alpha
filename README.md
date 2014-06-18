@@ -60,6 +60,25 @@ Which should return:
 }
 ```
 
+### Seeing everything in the store
+
+```
+curl -H "Accepts: application/json"  http://localhost:5000/titles
+```
+
+Returns something like this for now (urls to items)
+
+```
+{
+  "titles": [
+    "https://system-of-record.s3.amazonaws.com/12DFSADF/head.json?Signature=RUbN1kqrD35hHFiYD2yPXsztqWU%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q",
+    "https://system-of-record.s3.amazonaws.com/TN12345/head.json?Signature=v%2FIwezv7TPziTTTvDCG%2Bcuibbos%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q",
+    "https://system-of-record.s3.amazonaws.com/TN1234567/head.json?Signature=%2BMvoopIx2kGWf92O5xKN7y8qA8A%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q",
+    "https://system-of-record.s3.amazonaws.com/TN99999/head.json?Signature=gIXvxR5uwPwT8%2Fyq44yFhMwDbhI%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q"
+  ]
+}
+```
+
 
 ### Stuff I'm adding/changing v soon.
 
