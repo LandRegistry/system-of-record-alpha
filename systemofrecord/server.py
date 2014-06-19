@@ -15,10 +15,10 @@ def  title_by_number(title_number):
         title = storage.get(title_number)
         if not title:
             abort(404)
-        if type(title) == str:
-            return jsonify(load(title))
-        else:
-            return jsonify({title_number: title})
+        #jiggery pokery for stupid in memory storage thing i did
+        if type(title) != dict:
+            title = load(title)
+        return jsonify({title_number : title})
 
 @app.route('/titles', methods=[ 'GET', 'POST'])
 def titles():
