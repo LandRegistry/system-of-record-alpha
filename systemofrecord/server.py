@@ -2,17 +2,23 @@ from flask import jsonify,  abort, request, make_response
 from simplejson import load
 
 from systemofrecord import app
-from .storage import Storage
+from .storage import Storage, MemoryStorage
 
-storage = Storage(app.config)
+if not (app.config['AWS_KEY'] and app.config['AWS_SECRET']  and app.config['S3_BUCKET']):
+    storage = MemoryStorage()
+else:
+    storage = Storage(app.config)
 
 @app.route('/titles/<title_number>')
 def  title_by_number(title_number):
         print "calling titles with number %s" % title_number
         title = storage.get(title_number)
-        if title:
+        if not title:
+            abort(404)
+        if type(title) == str:
             return jsonify(load(title))
-        abort(404)
+        else:
+            return jsonify({title_number: title})
 
 @app.route('/titles', methods=[ 'GET', 'POST'])
 def titles():

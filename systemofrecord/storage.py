@@ -1,5 +1,6 @@
 from Crypto.Hash import SHA256
 from .utils import load_keys, create_keys
+from simplejson import load
 
 from flask import json
 
@@ -44,3 +45,20 @@ class Storage(object,):
     def __get_bucket(self):
         connection = boto.connect_s3(self.aws_key, self.aws_secret)
         return connection.get_bucket(self.s3_bucket )
+
+class MemoryStorage(object,):
+
+    def __init__(self):
+        self.store = {}
+
+    def put(self, data):
+       key = data['title_number']
+       self.store[key] = data
+       print self.store
+
+    def get(self, title_number):
+        return self.store.get(title_number)
+
+    def list_titles(self):
+        return self.store
+
