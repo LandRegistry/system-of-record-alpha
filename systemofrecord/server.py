@@ -18,7 +18,7 @@ def  title_by_number(title_number):
         if type(title) == str:
             return jsonify(load(title))
         else:
-            return jsonify({title_number: load(title)})
+            return jsonify({title_number: title})
 
 @app.route('/titles', methods=[ 'GET', 'POST'])
 def titles():
