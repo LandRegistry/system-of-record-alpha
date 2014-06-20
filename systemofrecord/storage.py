@@ -22,9 +22,14 @@ class S3Store(object):
        key.set_contents_from_string(json.dumps(data), encrypt_key=True)
        self.__set_new_head(data['title_number'], bucket, key_path)
 
-    def get(self, title_number):
+    def get_latest(self, title_number):
         bucket = self.__get_bucket()
         key = '%s/head.json' % title_number
+        return bucket.get_key(key)
+
+    def get_title(self, title_number, timestamp):
+        bucket = self.__get_bucket()
+        key = '%s/%d.json' % (title_number, timestamp)
         return bucket.get_key(key)
 
     def list_titles(self):
@@ -61,12 +66,17 @@ class MemoryStore(object):
         self.store[key] = data
         self.store[latest_title] = data
 
-    def get(self, title_number):
-        return self.store.get(title_number)
+    def get_latest(self, title_number):
+        key = '%s/head.json' % title_number
+        return self.store.get(key)
+
+    def get_title(self, title_number, timestamp):
+        key = '%s/%d.json' % (title_number, timestamp)
+        return self.store.get(key)
 
     def list_titles(self):
         print self.store
-        return [{k:v} for k,v in self.store.iteritems() if 'head' in k]
+        return [{k.split("/")[0] : v} for k,v in self.store.iteritems() if 'head' in k]
 
     def clear(self):
         self.store.clear()

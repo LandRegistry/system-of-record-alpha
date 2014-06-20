@@ -11,8 +11,8 @@ else:
     app.logger.info( 'Running against S3')
 
 @app.route('/titles/<title_number>')
-def  title_by_number(title_number):
-        title = storage.get(title_number)
+def  latest_title_by_number(title_number):
+        title = storage.get_latest(title_number)
         if not title:
             app.logger.info( 'Title number: %s not found ' % title_number)
             abort(404)
@@ -20,6 +20,18 @@ def  title_by_number(title_number):
         if type(title) != dict:
             title = load(title)
         return jsonify({title_number : title})
+
+@app.route('/titles/<title_number>/<int:timestamp>')
+def  title_by_number(title_number, timestamp):
+        title = storage.get_title(title_number, timestamp)
+        if not title:
+            app.logger.info( 'Title number: %s not found ' % title_number)
+            abort(404)
+        #jiggery pokery for stupid in memory storage thing i did
+        if type(title) != dict:
+            title = load(title)
+        return jsonify({title_number : title})
+
 
 @app.route('/titles', methods=[ 'GET', 'POST'])
 def titles():
