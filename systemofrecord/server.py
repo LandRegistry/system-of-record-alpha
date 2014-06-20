@@ -23,7 +23,6 @@ def  title_by_number(title_number):
 @app.route('/titles', methods=[ 'GET', 'POST'])
 def titles():
     if request.method == 'GET':
-        # a bit hokey but for the moment I'll just return urls to
         titles = storage.list_titles()
         print titles
         return jsonify(titles=titles)

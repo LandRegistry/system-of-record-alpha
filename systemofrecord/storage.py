@@ -34,7 +34,10 @@ class Storage(object,):
         latest_titles = []
         for title in titles:
             if 'head.json' in title.name:
-                latest_titles.append(title.generate_url(expires_in=6000))
+                title = bucket.get_key(title.name)
+                title_json = load(title)
+                title_number = title_json['title_number']
+                latest_titles.append({title_number : title_json})
         return latest_titles
 
     def __set_new_head(self, title_number, source_bucket, source_key):

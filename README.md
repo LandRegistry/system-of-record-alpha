@@ -7,6 +7,10 @@ Service to create new versions of a title, hashed and signed.
 
 Create an S3 bucket
 
+**If you don't want to set up S3**
+
+Note that you can run using an in memory/temporary store of records if you skip the S3 part below.
+
 **Set some environment variables**
 
  ```
@@ -30,7 +34,7 @@ pip install -r requirements
 **POST some data**
 
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567", "sha256":  "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428"}' http://localhost:5000/titles
+curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567", "sha256":  "created_ts": 1210101, "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428"}' http://localhost:5000/titles
 ```
 
 That should write two entries to the S3 bucket with the keys ```TN1234567/head.json``` and another file with same content named ```a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428.json```
@@ -47,35 +51,55 @@ current title entry.
 **GET some data**
 
 ```
-curl -H "Accepts: application/json"  http://localhost:5000/titles/TN1234567
+curl -H "Accept: application/json"  http://localhost:5000/titles/TN1234567
 ```
 
 Which should return:
-
 ```
-{
-  "address": "1 low street",
-  "sha256": "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
-  "title_number": "TN1234567"
+TN1234567: {
+    address: "1 low street",
+    created_ts: 1210101,
+    sha256: "e27e7eda1e0c12161e28d89532c158ea4b49dcf333b5b2278569cace13c2d428",
+    title_number: "TN1234567"
 }
 ```
 
 ### Seeing everything in the store
 
 ```
-curl -H "Accepts: application/json"  http://localhost:5000/titles
+curl -H "Accepts application/json"  http://localhost:5000/titles
 ```
 
-Returns something like this for now (urls to items)
+Returns something like this for now.
 
 ```
 {
-  "titles": [
-    "https://system-of-record.s3.amazonaws.com/12DFSADF/head.json?Signature=RUbN1kqrD35hHFiYD2yPXsztqWU%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q",
-    "https://system-of-record.s3.amazonaws.com/TN12345/head.json?Signature=v%2FIwezv7TPziTTTvDCG%2Bcuibbos%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q",
-    "https://system-of-record.s3.amazonaws.com/TN1234567/head.json?Signature=%2BMvoopIx2kGWf92O5xKN7y8qA8A%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q",
-    "https://system-of-record.s3.amazonaws.com/TN99999/head.json?Signature=gIXvxR5uwPwT8%2Fyq44yFhMwDbhI%3D&Expires=1403111230&AWSAccessKeyId=AKIAIGALNEUECYAGY64Q"
-  ]
+titles: [
+    {
+        TN1234567: {
+            address: "1 low street",
+            created_ts: 1010101010,
+            sha256: "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
+            title_number: "TN1234567"
+            }
+        },
+        {
+        TN9876543: {
+            address: "1 middle street",
+            created_ts: 1010101010,
+            sha256: "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
+            title_number: "TN9876543"
+            }
+        },
+        {
+        TN9876578787878: {
+                address: "1 high street",
+                created_ts: 1010101010,
+                sha256: "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
+                title_number: "TN9876578787878"
+            }
+        }
+    ]
 }
 ```
 
