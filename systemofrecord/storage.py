@@ -1,12 +1,11 @@
 from Crypto.Hash import SHA256
 from .utils import load_keys, create_keys
 from simplejson import load
-
 from flask import json
-
 import boto
 
-class Storage(object,):
+
+class S3Store(object):
 
     def __init__(self, config):
         self.aws_key = config['AWS_KEY']
@@ -44,24 +43,31 @@ class Storage(object,):
         destination_key  = "%s/%s.json" % (title_number,  'head')
         source_bucket.copy_key(destination_key, source_bucket.name,  source_key)
 
-
     def __get_bucket(self):
         connection = boto.connect_s3(self.aws_key, self.aws_secret)
         return connection.get_bucket(self.s3_bucket )
 
-class MemoryStorage(object,):
+
+class MemoryStore(object):
 
     def __init__(self):
         self.store = {}
 
     def put(self, data):
-       key = data['title_number']
-       self.store[key] = data
-       print self.store
+        key = "%s/%s.json" % (data['title_number'], data['created_ts'])
+        # create an entry with same data called TITLE_NUMBER/head.json as we have on S3
+        # I can see we'll ditch this way of identifying at some point soon
+        latest_title = "%s/head.json" % data['title_number']
+        self.store[key] = data
+        self.store[latest_title] = data
 
     def get(self, title_number):
         return self.store.get(title_number)
 
     def list_titles(self):
-        return self.store
+        print self.store
+        return [{k:v} for k,v in self.store.iteritems() if 'head' in k]
+
+    def clear(self):
+        self.store.clear()
 
