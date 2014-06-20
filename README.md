@@ -1,3 +1,7 @@
+System of Record
+================
+
+[![Build Status](https://travis-ci.org/LandRegistry/system-of-record.svg)](https://travis-ci.org/LandRegistry/system-of-record)
 
 ## S3 backed storage of minted title entries
 
