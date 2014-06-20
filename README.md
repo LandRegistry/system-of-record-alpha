@@ -104,7 +104,6 @@ titles: [
 ```
 
 
-### Stuff I'm adding/changing v soon.
+### TODO
 
-Add in memory store so that local testing easy (i.e. no s3 bucket needed)
-Check incoming title entry for integrity
+Check incoming title entry for integrity using public key.
