@@ -37,25 +37,24 @@ pip install -r requirements
 
 **POST some data**
 
-```
-curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567", "sha256":  "created_ts": 1210101, "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428"}' http://localhost:5000/titles
+
+curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567",  "created_ts": 1210101 }' http://localhost:8001/last```
 ```
 
-That should write two entries to the S3 bucket with the keys ```TN1234567/head.json``` and another file with same content named ```a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428.json```
+That should write two entries to the S3 bucket with the keys ```head.json``` and another file with same content named ```TN1234567-1210101.json```
 
 
 ** What you will see on S3**
 
 ![Document on S3](http://i.imgur.com/D4VzxpA.png)
 
-Subsequent writes for the same title number will  also write the file contents with sha256 sum as name and over write the head.json so that head.json will be the latest,
-current title entry.
+Subsequent writes of subsequent title files will write the new file and and over write the head.json so that head.json will be the latest title entry.
 
 
 **GET some data**
 
 ```
-curl -H "Accept: application/json"  http://localhost:5000/titles/TN1234567
+curl -H "Accept: application/json"  http://localhost:5000/last
 ```
 
 Which should return:

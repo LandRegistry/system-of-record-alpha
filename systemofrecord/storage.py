@@ -12,20 +12,17 @@ class S3Store(object):
         self.aws_secret = config['AWS_SECRET']
         self.s3_bucket = config['S3_BUCKET']
 
-    def put(self, data):
-
+    def put_last(self, data):
        #TODO check data integrity using public key
        bucket = self.__get_bucket()
-
-       key_path = "%s/%s.json" % (data['title_number'], data['created_ts'])
+       key_path =  '%s-%s.json ' % (data['title_number'], data['created_ts'])
        key = bucket.new_key(key_path)
        key.set_contents_from_string(json.dumps(data), encrypt_key=True)
-       self.__set_new_head(data['title_number'], bucket, key_path)
+       self.__set_new_head(bucket, key_path)
 
-    def get_latest(self, title_number):
+    def get_last(self,):
         bucket = self.__get_bucket()
-        key = '%s/head.json' % title_number
-        return bucket.get_key(key)
+        return bucket.get_key( 'head.json')
 
     def get_title(self, title_number, timestamp):
         bucket = self.__get_bucket()
@@ -44,8 +41,8 @@ class S3Store(object):
                 latest_titles.append({title_number : title_json})
         return latest_titles
 
-    def __set_new_head(self, title_number, source_bucket, source_key):
-        destination_key  = "%s/%s.json" % (title_number,  'head')
+    def __set_new_head(self, source_bucket, source_key):
+        destination_key  = 'head.json'
         source_bucket.copy_key(destination_key, source_bucket.name,  source_key)
 
     def __get_bucket(self):
@@ -58,25 +55,17 @@ class MemoryStore(object):
     def __init__(self):
         self.store = {}
 
-    def put(self, data):
-        key = "%s/%s.json" % (data['title_number'], data['created_ts'])
-        # create an entry with same data called TITLE_NUMBER/head.json as we have on S3
-        # I can see we'll ditch this way of identifying at some point soon
-        latest_title = "%s/head.json" % data['title_number']
+    def get_last(self):
+        return self.store.get('head.json')
+
+    def put_last(self, data):
+        key =  '%s-%s.json ' % (data['title_number'], data['created_ts'])
+        latest_title =  'head.json'
         self.store[key] = data
         self.store[latest_title] = data
 
-    def get_latest(self, title_number):
-        key = '%s/head.json' % title_number
-        return self.store.get(key)
-
-    def get_title(self, title_number, timestamp):
-        key = '%s/%d.json' % (title_number, timestamp)
-        return self.store.get(key)
-
     def list_titles(self):
-        print self.store
-        return [{k.split("/")[0] : v} for k,v in self.store.iteritems() if 'head' in k]
+        return [{k.split( '/ ')[0] : v} for k,v in self.store.iteritems() if 'head' in k]
 
     def clear(self):
         self.store.clear()
