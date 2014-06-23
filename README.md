@@ -18,7 +18,7 @@ Note that you can run using an in memory/temporary store of records if you skip 
 **Set some environment variables**
 
  ```
-export AWS_KEY=YOUR_KEY
+ export AWS_KEY=YOUR_KEY
 export S3_BUCKET='some-bucket-name'
 export AWS_SECRET=YOUR_AWS_SECRET
 ```
@@ -37,7 +37,7 @@ pip install -r requirements
 
 **POST some data**
 
-
+```
 curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567",  "created_ts": 1210101 }' http://localhost:8001/last```
 ```
 
