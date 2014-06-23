@@ -13,7 +13,11 @@ class S3Store(object):
         self.s3_bucket = config['S3_BUCKET']
 
     def put_last(self, data):
+
        #TODO check data integrity using public key
+       # actually probably introduce some chain object to handle validation and
+       # then just delegate to some storage mechanism for write of file
+
        bucket = self.__get_bucket()
        key_path =  '%s-%s.json ' % (data['title_number'], data['created_ts'])
        key = bucket.new_key(key_path)
