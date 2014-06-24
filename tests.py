@@ -29,7 +29,7 @@ class SystemOfRecordTestCase(unittest.TestCase):
 
     def test_add_title(self):
         title_number = "TN1234567"
-        self.app.post('/last', data=json.dumps(
+        self.app.post('/titles/last', data=json.dumps(
             {
                 "title_number": title_number,
                 "address": "The Hovel, Moletown",
@@ -37,7 +37,7 @@ class SystemOfRecordTestCase(unittest.TestCase):
                 "predecessor": None
             }), content_type='application/json')
 
-        response = self.app.get('/last')
+        response = self.app.get('/titles/last')
 
         self.assertEqual(json.loads(response.data), {
                     "title_number": title_number,
@@ -51,7 +51,7 @@ class SystemOfRecordTestCase(unittest.TestCase):
         title_number = "TN1234567"
 
         #create two records
-        self.app.post('/last', data=json.dumps(
+        self.app.post('/titles/last', data=json.dumps(
             {
                 "title_number": "ANUMB3R",
                 "address": "The Hovel, Moletown",
@@ -59,7 +59,7 @@ class SystemOfRecordTestCase(unittest.TestCase):
             }), content_type='application/json')
 
         #add another - this will be last now
-        self.app.post('/last', data=json.dumps(
+        self.app.post('/titles/last', data=json.dumps(
             {
                 "title_number": title_number,
                 "address": "The Palace, Kings Landing",
@@ -67,7 +67,7 @@ class SystemOfRecordTestCase(unittest.TestCase):
             }), content_type='application/json')
 
         # get the last record
-        response = self.app.get('/last')
+        response = self.app.get('/titles/last')
 
         self.assertEqual(json.loads(response.data), {
                "title_number": title_number,

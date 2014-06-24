@@ -10,7 +10,7 @@ else:
     storage = S3Store(app.config)
     app.logger.info( 'Running against S3')
 
-@app.route('/last', methods=[ 'GET', 'POST'])
+@app.route('/titles/last', methods=[ 'GET', 'POST'])
 def last_title():
     if request.method == 'GET':
         last_title = storage.get_last()
