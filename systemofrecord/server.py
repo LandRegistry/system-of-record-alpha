@@ -14,7 +14,10 @@ else:
 def last_title():
     if request.method == 'GET':
         last_title = storage.get_last()
-        return jsonify(last_title)
+        if last_title:
+            return jsonify(load(last_title))
+        else:
+            return abort(404)
     else:
         storage.put_last(request.json)
         return make_response('OK', 200)
