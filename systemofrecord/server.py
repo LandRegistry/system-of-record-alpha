@@ -3,19 +3,14 @@ from simplejson import load
 
 from systemofrecord import app
 from .storage import S3Store, MemoryStore
-
-if not (app.config['AWS_KEY'] and app.config['AWS_SECRET'] and app.config['S3_BUCKET']):
-    storage = MemoryStore()
-else:
-    storage = S3Store(app.config)
-    app.logger.info( 'Running against S3')
+storage = MemoryStore()
 
 @app.route('/titles/last', methods=[ 'GET', 'POST'])
 def last_title():
     if request.method == 'GET':
         last_title = storage.get_last()
         if last_title:
-            return jsonify(load(last_title))
+            return jsonify(last_title)
         else:
             return abort(404)
     else:
