@@ -2,57 +2,38 @@ from Crypto.Hash import SHA256
 from .utils import load_keys, create_keys
 from simplejson import load
 from flask import json
-import boto
+from flask.ext.sqlalchemy import SQLAlchemy
+import os
 
+class DBStore(object):
 
-class S3Store(object):
+    def __init__(self, app):
 
-    def __init__(self, config):
-        self.aws_key = config['AWS_KEY']
-        self.aws_secret = config['AWS_SECRET']
-        self.s3_bucket = config['S3_BUCKET']
+        if 'DATABASE_URL' in os.environ:
+            app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace('postgres://', 'postgresql+psycopg2://')
+        else:
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://sysofrec:password@%s/sysofrec' % os.environ.get('SYSOFRECDB_1_PORT_5432_TCP', '').replace('tcp://', '')
+        db = SQLAlchemy(app)
 
     def put_last(self, data):
+       # TODO check data integrity using public key
+       # (or introduce some chain object to handle validation and
+       # then just delegate to some storage mechanism for write of file)
 
-       #TODO check data integrity using public key
-       # actually probably introduce some chain object to handle validation and
-       # then just delegate to some storage mechanism for write of file
-
-       bucket = self.__get_bucket()
-       key_path =  '%s-%s.json ' % (data['title_number'], data['created_ts'])
-       key = bucket.new_key(key_path)
-       key.set_contents_from_string(json.dumps(data), encrypt_key=True)
-       self.__set_new_head(bucket, key_path)
+       # TODO save data to PostgresQL DB
+       pass
 
     def get_last(self,):
-        bucket = self.__get_bucket()
-        return bucket.get_key( 'head.json')
+        # TODO read data from PostgresQL DB
+        pass
 
     def get_title(self, title_number, timestamp):
-        bucket = self.__get_bucket()
-        key = '%s/%d.json' % (title_number, timestamp)
-        return bucket.get_key(key)
+        # TODO read data from PostgresQL DB
+        pass
 
     def list_titles(self):
-        bucket = self.__get_bucket()
-        titles = bucket.list()
-        latest_titles = []
-        for title in titles:
-            if 'head.json' in title.name:
-                title = bucket.get_key(title.name)
-                title_json = load(title)
-                title_number = title_json['title_number']
-                latest_titles.append({title_number : title_json})
-        return latest_titles
-
-    def __set_new_head(self, source_bucket, source_key):
-        destination_key  = 'head.json'
-        source_bucket.copy_key(destination_key, source_bucket.name,  source_key)
-
-    def __get_bucket(self):
-        connection = boto.connect_s3(self.aws_key, self.aws_secret)
-        return connection.get_bucket(self.s3_bucket )
-
+        # TODO read data from PostgresQL DB
+        pass
 
 class MemoryStore(object):
 
@@ -73,4 +54,3 @@ class MemoryStore(object):
 
     def clear(self):
         self.store.clear()
-

@@ -1,5 +1,4 @@
 import os
 
-AWS_KEY = os.environ.get('AWS_KEY')
-AWS_SECRET = os.environ.get('AWS_SECRET')
-S3_BUCKET = os.environ.get('S3_BUCKET')
+# TODO move the PostgresQL env vars here from storage.py
+USE_INMEMORY_DB = os.environ.get('USE_INMEMORY_DB')

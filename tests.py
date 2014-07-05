@@ -1,7 +1,7 @@
 import calendar
 import datetime
 from systemofrecord import server
-from systemofrecord.storage import MemoryStore, S3Store
+from systemofrecord.storage import MemoryStore, DBStore
 import unittest
 import json
 
@@ -16,9 +16,9 @@ class SystemOfRecordTestCase(unittest.TestCase):
         server.app.config['TESTING'] = True
         self.app = server.app.test_client()
         #make sure we're running against in memory store
-        if type(server.storage) == S3Store:
+        if type(server.storage) == DBStore:
             server.storage = MemoryStore()
-            print "S3 was used, switched to memory store"
+            print "DB was used, switched to memory store"
 
     def tearDown(self):
         server.storage.clear()
