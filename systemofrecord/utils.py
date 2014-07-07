@@ -5,6 +5,7 @@ from Crypto import Random
 
 import json
 
+
 def alphabetically_sorted_dict(d):
     """
     Returns a dictionary with all keys recursively sorted alphabetically
@@ -17,6 +18,7 @@ def alphabetically_sorted_dict(d):
             ordered[k] = v
     return ordered
 
+
 def canonical_json(d):
     return json.dumps(
         alphabetically_sorted_dict(d),
@@ -28,6 +30,7 @@ def create_keys():
     random_generator = Random.new().read
     key = RSA.generate(1024, random_generator)
     return (key.publickey().exportKey(), key.exportKey())
+
 
 def sha256_sum(data):
     return SHA256.new(data).hexdigest()
