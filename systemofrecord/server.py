@@ -1,16 +1,9 @@
 from flask import jsonify,  abort, request, make_response
-from simplejson import load
 
 from systemofrecord import app
-from .storage import DBStore, MemoryStore
+from .storage import DBStore
 
-if app.config['USE_INMEMORY_DB']:
-    print "Using in-memory storage"
-    storage = MemoryStore()
-else:
-    print "Using DB storage"
-    storage = DBStore(app)
-
+storage = DBStore(app)
 
 @app.route('/titles/last', methods=['GET', 'POST'])
 def last_title():

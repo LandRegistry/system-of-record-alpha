@@ -7,6 +7,7 @@ from sqlalchemy.dialects.postgresql import JSON
 import os
 from .server import app
 from systemofrecord import db
+from systemofrecord.models import Titles
 
 
 class DBStore(object):
@@ -25,33 +26,28 @@ class DBStore(object):
 
     def get_last(self,):
         titles = Titles.query.first()
-        return {'title': {
-            'number':titles.title_number,
-            'data':titles.data
-        }}
+        app.logger.info('FOUND SOMETHINGININININININ')
+        if titles:
+            return {'title': {
+                'number':titles.title_number,
+                'data':titles.data
+            }}
+        return []
 
     def get(self, title_number):
-        titles = Titles.query.filter_by(title_number=title_number).first()
-        return {'title': {
-            'number':titles.title_number,
-            'data':titles.data
-        }}
+        title = Titles.query.filter_by(title_number=title_number).first()
+        if title:
+            app.logger.info("Found title %s" % title)
+            return {
+                'title': {
+                    'number':   title.title_number,
+                    'data': title.data
+            }}
+        return None
 
     def list_titles(self):
         # TODO read data from PostgresQL DB
-        pass
-
-
-class Titles(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title_number = db.Column('title_number', db.String(64))
-    #data = db.Column('data', JSON)
-    data = db.Column('data', db.String(512))
-
-    def __init__(self, title_number, data):
-        self.title_number = title_number
-        self.data = data
-
+        return []
 
 class MemoryStore(object):
 
