@@ -4,3 +4,5 @@ import os
 USE_INMEMORY_DB = False
 if 'USE_INMEMORY_DB' in os.environ:
     USE_INMEMORY_DB = True
+
+DEBUG = True
