@@ -24,6 +24,20 @@ def last_title():
         storage.put_last(request.json)
         return make_response('OK', 200)
 
+@app.route('/titles/<number>', methods=['GET', 'POST'])
+def by_title(number=None):
+    if request.method == 'GET':
+        title = storage.get(number)
+        if title:
+            return jsonify(title)
+        else:
+            return abort(404)
+    else:
+        storage.put(number, request.json)
+        #app.logger.debug("number %s, data %s" %(number, request.json))
+        return make_response('OK', 200)
+
+
 
 #not sure who this would be for yet.
 @app.route('/titles')

@@ -3,25 +3,13 @@ System of Record
 
 [![Build Status](https://travis-ci.org/LandRegistry/system-of-record.svg)](https://travis-ci.org/LandRegistry/system-of-record)
 
-## S3 backed storage of minted title entries
+## Storage of minted title entries
 
 Service to create new versions of a title, hashed and signed.
 
 ### Try it out
 
-Create an S3 bucket
-
-**If you don't want to set up S3**
-
 Note that you can run using an in memory/temporary store of records if you skip the S3 part below.
-
-**Set some environment variables**
-
- ```
- export AWS_KEY=YOUR_KEY
-export S3_BUCKET='some-bucket-name'
-export AWS_SECRET=YOUR_AWS_SECRET
-```
 
  **Install some stuff**
 
@@ -40,15 +28,6 @@ pip install -r requirements
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567",  "created_ts": 1210101 }' http://localhost:8001/last```
 ```
-
-That should write two entries to the S3 bucket with the keys ```head.json``` and another file with same content named ```TN1234567-1210101.json```
-
-
-** What you will see on S3**
-
-![Document on S3](http://i.imgur.com/D4VzxpA.png)
-
-Subsequent writes of subsequent title files will write the new file and and over write the head.json so that head.json will be the latest title entry.
 
 
 **GET some data**

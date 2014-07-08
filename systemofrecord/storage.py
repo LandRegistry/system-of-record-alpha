@@ -14,23 +14,28 @@ class DBStore(object):
     def __init__(self, app):
         pass
 
-    def put_last(self, data):
+    def put(self, title_number, data):
         # TODO check data integrity using public key
         # (or introduce some chain object to handle validation and
         # then just delegate to some storage mechanism for write of file)
         # TODO save data to PostgresQL DB
-        title = Titles(data)
+        title = Titles(title_number, str(data))
         db.session.add(title)
         db.session.commit()
 
     def get_last(self,):
-        # TODO read specific entry
         titles = Titles.query.first()
-        return {'title':titles.data}
+        return {'title': {
+            'number':titles.title_number,
+            'data':titles.data
+        }}
 
-    def get_title(self, title_number, timestamp):
-        # TODO read data from PostgresQL DB
-        pass
+    def get(self, title_number):
+        titles = Titles.query.filter_by(title_number=title_number).first()
+        return {'title': {
+            'number':titles.title_number,
+            'data':titles.data
+        }}
 
     def list_titles(self):
         # TODO read data from PostgresQL DB
@@ -39,10 +44,12 @@ class DBStore(object):
 
 class Titles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title_number = db.Column('title_number', db.String(64))
     #data = db.Column('data', JSON)
     data = db.Column('data', db.String(512))
 
-    def __init__(self, data):
+    def __init__(self, title_number, data):
+        self.title_number = title_number
         self.data = data
 
 
