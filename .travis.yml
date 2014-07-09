@@ -5,3 +5,13 @@ install:
 - pip install -r requirements.txt
 - pip install pytest
 script: py.test
+deploy:
+  provider: heroku
+  buildpack: python
+  api_key:
+    secure: oJXDdvRznngqYh5L9wbddowkwTw1xbMdPcbJmOyKDR6Nk+RiX8x/yL7jWMkQdmpD39aqYIjKXuAQNtvHmgWVof7BU7bSmsA3vu8BlqQfQKBcq2yoLV6wm3o4zPzXXhWQrHNjqoDxLiWcz6aCQeMA34Eehy4R92Kkng2pJaCUuLw=
+  strategy: git
+  app: lr-system-of-record
+  on:
+    repo: landregistry/system-of-record
+    branch: master
