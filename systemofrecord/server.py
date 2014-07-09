@@ -5,6 +5,10 @@ from .storage import DBStore
 
 storage = DBStore(app)
 
+@app.route('/', methods=['GET'])
+def index():
+  return "OK"
+
 @app.route('/titles/last', methods=['GET', 'POST'])
 def last_title():
     if request.method == 'GET':
