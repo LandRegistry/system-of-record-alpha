@@ -162,9 +162,6 @@ titles: [
  python -m unittest discover
 ```
 
-**Note the only real tests are commented out for this pull request. Please uncomment and fix :)**
-
-
 ### TODO
 
 Check incoming title entry for integrity using public key.
