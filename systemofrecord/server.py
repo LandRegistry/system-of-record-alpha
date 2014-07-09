@@ -34,10 +34,9 @@ def by_title(number=None):
         #app.logger.debug("number %s, data %s" %(number, request.json))
         return make_response('OK', 200)
 
-
-
-#not sure who this would be for yet.
 @app.route('/titles')
 def titles():
     titles = storage.list_titles()
     return jsonify(titles=titles)
+
+

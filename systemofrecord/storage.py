@@ -26,7 +26,6 @@ class DBStore(object):
 
     def get_last(self,):
         titles = Titles.query.first()
-        app.logger.info('FOUND SOMETHINGININININININ')
         if titles:
             return {'title': {
                 'number':titles.title_number,
@@ -46,8 +45,19 @@ class DBStore(object):
         return None
 
     def list_titles(self):
-        # TODO read data from PostgresQL DB
-        return []
+        titles = Titles.query
+        if titles:
+            app.logger.info("Found some titles")
+            all_titles = {} #initialise to append new values
+            #all_titles dictionary has title_id as index, then title detail as value.
+            for p in Titles.query:
+                all_titles[p.id] = {
+                     'title': {
+                         'number':   p.title_number,
+                        'data': p.data
+                }}
+            return all_titles
+        return {}
 
 class MemoryStore(object):
 
