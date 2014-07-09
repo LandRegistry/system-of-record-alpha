@@ -60,6 +60,13 @@ DATABASE_URL=postgresql://localhost/sysofrec
 It's a special file that if sitting alongside a Procfile, foreman will use to create the environment variables contained. So anytime you run using
 the run.sh (which uses foreman) these will be set.
 
+###### psycopg on Mac
+
+If ```pip install -r requirements.txt``` fail on Mac, try pointing your PATH to Postgres.App:
+
+
+    export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.3/bin
+
 #####  Linux
 
 The intial createuser may ask for a password and whether user should be super user. If so, add a password and and say yes to give
