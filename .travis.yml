@@ -13,5 +13,5 @@ deploy:
   strategy: git
   app: lr-system-of-record
   on:
-    repo: landregistry/system-of-record
+    repo: LandRegistry/system-of-record
     branch: master
