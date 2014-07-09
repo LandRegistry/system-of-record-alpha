@@ -3,3 +3,4 @@
 static/build
 static/.webassets-cache
 dev/
+.env
