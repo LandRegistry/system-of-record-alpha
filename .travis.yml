@@ -9,7 +9,7 @@ deploy:
   provider: heroku
   buildpack: python
   api_key:
-    secure: rmjDJixledEbQwQQ9dqFVbdg7lWhPY5qYUxwy0qAojnydIhiRsINamXPUiw1lDi2Ri2itLFx++7IJXNr0dIkTi7o9fJNw1TvGJRz+/00hADTXCEB5j0bXFW7rfPN34PgS1I0opIucQHUxLxxKVKhr8avfOSEvW+k4ZFbGCyuN2w=
+    secure: SVOkDnBfcAr/Ok+LhW5msYsLD6cSYe+3C4x3A2Wjr8vhJQ1HW17P+fffWlP28LWuTYodrOJleAQ9B0upOypb5PvbfxHh1lEDO+OK1eZbhhp3JO08seDrYd1kv5e9chsXMD0hfxsZUL54czvy+Yb6V5cFOdMu/d2uXutndg+ohh4=
   strategy: git
   app: lr-system-of-record
   on:
