@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SETTINGS='config.Config'
+export SETTINGS='config.DevelopmentConfig'
 export DATABASE_URL='postgresql://localhost/sysofrec'
 
 createuser -s sysofrec

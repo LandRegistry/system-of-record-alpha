@@ -1,5 +1,5 @@
 import os
 
-class Config(object):
+class DevelopmentConfig(object):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
