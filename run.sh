@@ -7,6 +7,4 @@ createuser -s sysofrec
 createdb -U sysofrec -O sysofrec sysofrec -T template0
 
 python manage.py db upgrade
-
-foreman start
-
+python run_dev.py
