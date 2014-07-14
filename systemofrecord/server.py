@@ -47,4 +47,8 @@ redis_queue = app.config['REDIS_QUEUE']
 redis = Redis(redis_host)
 
 def queue_title(number, json):
-    redis.rpush(redis_queue, json)
+    try:
+        redis.rpush(redis_queue, json)
+    except Exception, e:
+            app.logger.info(e)
+            app.logger.info("Couldn't enqueue data for title %s: data: %s" % (number, json))
