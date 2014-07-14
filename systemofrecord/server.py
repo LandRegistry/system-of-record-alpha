@@ -42,8 +42,8 @@ def titles():
 
 # TODO refactor and move to own module
 from redis import Redis
-redis_host = app.config['REDIS_HOST']
-redis_queue = app.config['REDIS_QUEUE']
+redis_host = app.config.get('REDIS_HOST')
+redis_queue = app.config.get('REDIS_QUEUE')
 redis = Redis(redis_host)
 
 def queue_title(number, json):
