@@ -31,6 +31,7 @@ def by_title(number=None):
             return abort(404)
     else:
         storage.put(number, request.json)
+        queue_title(number, request.json)
         #app.logger.debug("number %s, data %s" %(number, request.json))
         return make_response('OK', 200)
 
@@ -39,4 +40,11 @@ def titles():
     titles = storage.list_titles()
     return jsonify(titles=titles)
 
+# TODO refactor and move to own module
+from redis import Redis
+redis_host = app.config['REDIS_HOST']
+redis_queue = app.config['REDIS_QUEUE']
+redis = Redis(redis_host)
 
+def queue_title(number, json):
+    redis.rpush(redis_queue, json)
