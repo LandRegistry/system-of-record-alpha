@@ -13,7 +13,6 @@ eventlet==0.14.0
 greenlet==0.4.2
 gunicorn==18.0
 itsdangerous==0.24
-mock==1.0.1
 psycopg2==2.5.3
 pycrypto==2.6.1
 redis==2.10.1
