@@ -2,7 +2,9 @@ from flask import jsonify,  abort, request, make_response
 
 from systemofrecord import app
 from .storage import DBStore
+from .feeder import FeederQueue
 
+feeder = FeederQueue(app)
 storage = DBStore(app)
 
 @app.route('/', methods=['GET'])
@@ -31,8 +33,8 @@ def by_title(number=None):
             return abort(404)
     else:
         storage.put(number, request.json)
-        queue_title(number, request.json)
-        #app.logger.debug("number %s, data %s" %(number, request.json))
+        feeder.enqueue(number, request.json)
+        app.logger.debug("number %s, data %s" %(number, request.json))
         return make_response('OK', 200)
 
 @app.route('/titles')
@@ -40,15 +42,4 @@ def titles():
     titles = storage.list_titles()
     return jsonify(titles=titles)
 
-# TODO refactor and move to own module
-from redis import Redis
-redis_host = app.config.get('REDIS_HOST')
-redis_queue = app.config.get('REDIS_QUEUE')
-redis = Redis(redis_host)
 
-def queue_title(number, json):
-    try:
-        redis.rpush(redis_queue, json)
-    except Exception, e:
-        app.logger.info(e)
-        app.logger.info("Couldn't enqueue data for title %s: data: %s" % (number, json))
