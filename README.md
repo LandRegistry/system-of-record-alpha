@@ -169,7 +169,8 @@ titles: [
 ### Run the tests
 
 ```
- python -m unittest discover
+export SETTINGS='config.TestConfig'
+py.test
 ```
 
 ### TODO
