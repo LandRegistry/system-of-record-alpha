@@ -85,6 +85,16 @@ python manage.py db upgrade
 
 ```
 
+### Install and start Redis to enqueue data for the feeder
+
+```
+brew install redis
+```
+
+```
+redis-server
+```
+
 #### Run the app
 
 ```

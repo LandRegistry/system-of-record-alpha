@@ -2,7 +2,9 @@ from flask import jsonify,  abort, request, make_response
 
 from systemofrecord import app
 from .storage import DBStore
+from .feeder import FeederQueue
 
+feeder = FeederQueue(app)
 storage = DBStore(app)
 
 @app.route('/', methods=['GET'])
@@ -31,7 +33,8 @@ def by_title(number=None):
             return abort(404)
     else:
         storage.put(number, request.json)
-        #app.logger.debug("number %s, data %s" %(number, request.json))
+        feeder.enqueue(number, request.json)
+        app.logger.debug("number %s, data %s" %(number, request.json))
         return make_response('OK', 200)
 
 @app.route('/titles')
