@@ -5,7 +5,7 @@ install:
 - pip install -r requirements.txt
 - pip install pytest
 env:
-  - SETTINGS='config.Config'
+  - SETTINGS='config.TestConfig'
 script: py.test
 deploy:
   provider: heroku
