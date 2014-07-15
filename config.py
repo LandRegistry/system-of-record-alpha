@@ -9,3 +9,7 @@ class Config(object):
 class DevelopmentConfig(Config):
     DEBUG = True
 
+class TestConfig(DevelopmentConfig):
+        REDIS_HOST = 'redis://user:@localhost:6379'
+
+
