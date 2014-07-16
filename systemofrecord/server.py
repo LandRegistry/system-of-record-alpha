@@ -5,26 +5,22 @@ from .storage import DBStore
 from .feeder import FeederQueue
 
 feeder = FeederQueue(app)
-storage = DBStore(app)
+storage = DBStore()
 
 @app.route('/', methods=['GET'])
 def index():
   return "OK"
 
-@app.route('/titles/last', methods=['GET', 'POST'])
-def last_title():
-    if request.method == 'GET':
-        last_title = storage.get_last()
-        if last_title:
-            return jsonify(last_title)
-        else:
-            return abort(404)
-    else:
-        storage.put_last(request.json)
-        return make_response('OK', 200)
+# @app.route('/titles/last')
+# def last_title():
+#     last_title = storage.get_last()
+#     if last_title:
+#         return jsonify(last_title)
+#     else:
+#         return abort(404)
 
 @app.route('/titles/<number>', methods=['GET', 'POST'])
-def by_title(number=None):
+def title(number):
     if request.method == 'GET':
         title = storage.get(number)
         if title:

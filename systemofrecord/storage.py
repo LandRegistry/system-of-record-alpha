@@ -1,19 +1,8 @@
-from Crypto.Hash import SHA256
-from .utils import load_keys, create_keys
-from simplejson import load
-from flask import json
-from sqlalchemy import Table, Column, MetaData, Integer
-from sqlalchemy.dialects.postgresql import JSON
-import os
 from .server import app
 from systemofrecord import db
 from systemofrecord.models import Titles
 
-
 class DBStore(object):
-
-    def __init__(self, app):
-        pass
 
     def put(self, title_number, data):
         # TODO check data integrity using public key
@@ -24,7 +13,7 @@ class DBStore(object):
         db.session.add(title)
         db.session.commit()
 
-    def get_last(self,):
+    def get_last(self):
         titles = Titles.query.first()
         if titles:
             return {'title': {
@@ -58,24 +47,3 @@ class DBStore(object):
                 }}
             return all_titles
         return {}
-
-class MemoryStore(object):
-
-    def __init__(self):
-        self.store = {}
-
-    def get_last(self):
-        return self.store.get('head.json')
-
-    def put_last(self, data):
-        key = '%s-%s.json ' % (data['title_number'], data['created_ts'])
-        latest_title = 'head.json'
-        self.store[key] = data
-        self.store[latest_title] = data
-
-    def list_titles(self):
-        return [{k.split('/ ')[0]: v}
-                for k, v in self.store.iteritems() if 'head' in k]
-
-    def clear(self):
-        self.store.clear()
