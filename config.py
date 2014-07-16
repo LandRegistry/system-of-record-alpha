@@ -10,4 +10,5 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 class TestConfig(DevelopmentConfig):
-    TESTING =  True
+    REDIS_QUEUE_KEY='titles_queue'
+    REDIS_HOST='redis://user:@localhost:6379'
