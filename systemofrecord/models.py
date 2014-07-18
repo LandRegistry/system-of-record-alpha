@@ -1,13 +1,14 @@
 from systemofrecord import db
+from sqlalchemy.dialects.postgresql import  TEXT
 
 class Titles(db.Model):
 
     __tablename__ = 'titles'
 
     id = db.Column(db.Integer, primary_key=True)
-    title_number = db.Column('title_number', db.String(64))
+    title_number = db.Column(db.String(64))
     #data = db.Column('data', JSON)
-    data = db.Column('data', db.String(512))
+    data = db.Column(TEXT)
 
     def __init__(self, title_number, data):
         self.title_number = title_number

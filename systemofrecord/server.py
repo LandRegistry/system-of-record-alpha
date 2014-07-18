@@ -7,33 +7,29 @@ from .feeder import FeederQueue
 feeder = FeederQueue(app)
 storage = DBStore()
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
   return "OK"
 
-# @app.route('/titles/last')
-# def last_title():
-#     last_title = storage.get_last()
-#     if last_title:
-#         return jsonify(last_title)
-#     else:
-#         return abort(404)
+@app.route('/title/<title_number>', methods=['GET', 'POST'])
+def title(title_number):
 
-@app.route('/titles/<number>', methods=['GET', 'POST'])
-def title(number):
+    app.logger.debug("Title number %s, data %s" %(title_number, request.json))
+
     if request.method == 'GET':
-        title = storage.get(number)
+        title = storage.get(title_number)
         if title:
             return jsonify(title)
         else:
             return abort(404)
     else:
-        storage.put(number, request.json)
-        feeder.enqueue(number, request.json)
-        app.logger.debug("number %s, data %s" %(number, request.json))
+        storage.put(title_number, request.json)
+        app.logger.info("Put title json %s on feeder queue" % request.json['title'])
+        feeder.enqueue(title_number, request.json['title'])
+        app.logger.debug("Title number %s, data %s" %(title_number, request.json))
         return make_response('OK', 200)
 
-@app.route('/titles')
+@app.route('/title')
 def titles():
     titles = storage.list_titles()
     return jsonify(titles=titles)
