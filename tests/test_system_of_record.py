@@ -56,7 +56,7 @@ class SystemOfRecordTestCase(unittest.TestCase):
     @mock.patch("systemofrecord.feeder.FeederQueue.enqueue")
     @mock.patch("systemofrecord.storage.DBStore.put")
     def test_add_title(self, mock_put, mock_enqueue):
-        self.app.post("/title/%s" % title_number, data = json.dumps(data_from_mint), content_type="application/json")
+        self.app.put("/titles/%s" % title_number, data = json.dumps(data_from_mint), content_type="application/json")
         mock_put.assert_called_with(title_number, data_from_mint)
         mock_enqueue.assert_called_with(title_number, data_for_the_feeder)
 

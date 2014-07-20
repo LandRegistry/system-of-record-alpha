@@ -11,7 +11,7 @@ storage = DBStore()
 def index():
   return "OK"
 
-@app.route('/title/<title_number>', methods=['GET', 'POST'])
+@app.route('/titles/<title_number>', methods=['GET', 'PUT'])
 def title(title_number):
 
     app.logger.debug("Title number %s, data %s" %(title_number, request.json))
@@ -27,9 +27,9 @@ def title(title_number):
         app.logger.info("Put title json %s on feeder queue" % request.json['title'])
         feeder.enqueue(title_number, request.json['title'])
         app.logger.debug("Title number %s, data %s" %(title_number, request.json))
-        return make_response('OK', 200)
+        return make_response('OK', 201)
 
-@app.route('/title')
+@app.route('/titles')
 def titles():
     titles = storage.list_titles()
     return jsonify(titles=titles)
