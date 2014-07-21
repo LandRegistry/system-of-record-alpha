@@ -7,6 +7,8 @@ install:
 env:
   - SETTINGS='config.TestConfig'
 script: py.test
+before_deploy:
+- if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 deploy:
   provider: heroku
   buildpack: python
