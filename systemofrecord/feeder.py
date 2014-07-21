@@ -5,7 +5,7 @@ class FeederQueue(object):
 
     def __init__(self, app):
         self.logger = app.logger # bit quick and dirty
-        url = urlparse.urlparse(app.config.get('REDIS_HOST'))
+        url = urlparse.urlparse(app.config.get('REDIS_URL'))
         self.redis_queue = app.config.get('REDIS_QUEUE_KEY')
         self.redis = Redis(host=url.hostname, port=url.port, password=url.password)
 
