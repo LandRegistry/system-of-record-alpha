@@ -16,6 +16,6 @@ class TestConfig(DevelopmentConfig):
 
 class DockerConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SYSOFRECDB_1_PORT_5432_TCP', '').replace('tcp://', 'http://')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SYSOFRECDB_1_PORT_5432_TCP', '').replace('tcp://', 'postgresql://docker:docker@') + '/docker'
     REDIS_URL = os.environ.get('REDIS_1_PORT_6379_TCP', '').replace('tcp://', 'http://')
 
