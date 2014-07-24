@@ -33,5 +33,3 @@ def title(title_number):
 def titles():
     titles = storage.list_titles()
     return jsonify(titles=titles)
-
-
