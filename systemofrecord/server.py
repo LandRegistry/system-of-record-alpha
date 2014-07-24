@@ -25,7 +25,7 @@ def title(title_number):
     else:
         storage.put(title_number, request.json)
         app.logger.info("Put title json %s on feeder queue" % request.json['title'])
-        feeder.enqueue_pickle(title_number, request.json['title'])
+        feeder.enqueue(title_number, request.json['title'])
         app.logger.debug("Title number %s, data %s" %(title_number, request.json))
         return make_response('OK', 201)
 
