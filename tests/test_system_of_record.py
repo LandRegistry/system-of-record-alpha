@@ -60,3 +60,6 @@ class SystemOfRecordTestCase(unittest.TestCase):
         mock_put.assert_called_with(title_number, data_from_mint)
         mock_enqueue.assert_called_with(title_number, data_for_the_feeder)
 
+    def test_health(self):
+        response = self.app.get('/health')
+        assert response.status == '200 OK'

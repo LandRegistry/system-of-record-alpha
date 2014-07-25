@@ -47,3 +47,10 @@ class DBStore(object):
                 }}
             return all_titles
         return {}
+
+    def health(self):
+        try:
+            Titles.query.count()
+            return True, "DB" 
+        except:
+            return False, "DB" 
