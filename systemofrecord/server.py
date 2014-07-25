@@ -7,7 +7,7 @@ from .health import Health
 
 feeder = FeederQueue(app)
 storage = DBStore()
-Health(app)
+Health(app, checks=[storage.health])
 
 @app.route('/')
 def index():
