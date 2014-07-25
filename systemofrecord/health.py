@@ -1,5 +1,4 @@
 from healthcheck import HealthCheck
-from systemofrecord import app
 
 class Health(object):
 
