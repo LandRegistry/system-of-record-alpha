@@ -6,4 +6,5 @@ class Health(object):
         self.health = HealthCheck(app, endpoint)
 
         # extra health checks
-        [self.health.add_check(check) for check in checks if callable(check)]
+        if checks:
+            [self.health.add_check(check) for check in checks if callable(check)]
