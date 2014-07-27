@@ -1,9 +1,12 @@
 import calendar
 import datetime
-from systemofrecord import server, db
 import unittest
 import json
 import mock
+
+from systemofrecord import server
+from systemofrecord import db
+
 
 test_creation_time = calendar.timegm(datetime.datetime.utcnow().timetuple())
 the_past = datetime.datetime.now() - datetime.timedelta(days=30)
