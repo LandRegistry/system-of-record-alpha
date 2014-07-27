@@ -1,12 +1,13 @@
 from flask import jsonify,  abort, request, make_response
 
 from systemofrecord import app
+
 from .storage import DBStore
 from .feeder import FeederQueue
 from .health import Health
 
-feeder = FeederQueue(app)
 storage = DBStore()
+feeder = FeederQueue(app)
 Health(app, checks=[storage.health])
 
 @app.route('/')

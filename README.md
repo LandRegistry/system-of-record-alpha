@@ -101,17 +101,42 @@ redis-server
 ./run.sh
 ```
 
-**POST some data**
+**PUT some data**
 
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"address": "1 low street", "title_number": "TN1234567",  "created_ts": 1210101 }' http://localhost:5002/titles/TN1234567
+curl -X PUT -H "Content-Type: application/json"  http://localhost:8000/titles/TEST_AB1234567 \
+-d '{ "title":
+        {
+            "title_number": "TEST_AB1234567",
+            "proprietors": [
+                {
+                    "first_name": "firstname",
+                    "last_name": "lastname"
+                }
+            ],
+            "property" : {
+                "address": {
+                    "house_number": "house number",
+                    "road": "road",
+                    "town": "town",
+                    "postcode": ""
+                },
+                "tenure": "freehold",
+                "class_of_title": "absolute"
+            },
+            "payment": {
+                "price_paid": "12345",
+                "titles": ["TEST_AB1234567"]
+            }
+        }
+    }'
 ```
 
 
 **GET some data**
 
 ```
-curl -H "Accept: application/json"  http://localhost:5002/titles/TN1234567
+curl -H "Accept: application/json"  http://localhost:8000/titles/TEST_AB1234567
 ```
 
 Which should return:
@@ -119,8 +144,8 @@ Which should return:
 ```
 {
   "title": {
-    "data": "{u'title_number': u'TN1234567', u'created_ts': 1210101, u'address': u'1 low street'}",
-    "number": "TN1234567"
+    "data": "{u'title': {u'proprietors': [{u'first_name': u'firstname', u'last_name': u'lastname'}], u'title_number': u'TEST_AB1234567', u'property': {u'tenure': u'freehold', u'class_of_title': u'absolute', u'address': {u'house_number': u'house number', u'town': u'town', u'postcode': u'', u'road': u'road'}}, u'payment': {u'titles': [u'TEST_AB1234567'], u'price_paid': u'12345'}}}",
+    "number": "TEST_AB1234567"
   }
 }
 ```
@@ -128,43 +153,9 @@ Which should return:
 ### Seeing everything in the store
 
 ```
-curl -H "Accepts application/json"  http://localhost:5002/titles
+curl -H "Accepts application/json"  http://localhost:8000/titles
 ```
 
- **Not implemented yet **
-
-Returns something like this for now.
-
-```
-{
-titles: [
-    {
-        TN1234567: {
-            address: "1 low street",
-            created_ts: 1010101010,
-            sha256: "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
-            title_number: "TN1234567"
-            }
-        },
-        {
-        TN9876543: {
-            address: "1 middle street",
-            created_ts: 1010101010,
-            sha256: "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
-            title_number: "TN9876543"
-            }
-        },
-        {
-        TN9876578787878: {
-                address: "1 high street",
-                created_ts: 1010101010,
-                sha256: "a27e6eda1e0c12161e28d88332c158ea4b49dcf333b5b2278569cace13c2d428",
-                title_number: "TN9876578787878"
-            }
-        }
-    ]
-}
-```
 
 ### Run the tests
 
