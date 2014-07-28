@@ -14,6 +14,11 @@ class StorageTestCase(unittest.TestCase):
         db.create_all()
         self.storage = DBStore()
 
+    def tearDown(self):
+        titles = Title.query.all()
+        for title in titles:
+            db.session.delete(title)
+
     def test_put_with_payload_creates_title(self):
         self.storage.put(title_number, data_from_mint)
         #bypass db store api and check db
@@ -30,3 +35,23 @@ class StorageTestCase(unittest.TestCase):
         returned_data = self.storage.get(title_number)
         assert returned_data
         assert returned_data['title']['number'] == title_number
+
+
+    def test_get_titles_returns_all_titles(self):
+
+        self.storage.put(title_number, data_from_mint)
+
+        second_title_number = title_number.replace("AB", "CD")
+        data_from_mint["title_number"] = second_title_number
+
+        self.storage.put(second_title_number, data_from_mint)
+
+        third_title_number = second_title_number.replace("CD", "EF")
+        data_from_mint["title_number"] = third_title_number
+
+        self.storage.put(third_title_number, data_from_mint)
+
+        titles = self.storage.list_titles()
+
+        assert len(titles.items()) == 3
+
