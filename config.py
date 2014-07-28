@@ -13,6 +13,7 @@ class DevelopmentConfig(Config):
 
 class TestConfig(DevelopmentConfig):
     TESTING=True
+    SQLALCHEMY_DATABASE_URI = "sqlite://"
 
 class DockerConfig(Config):
     DEBUG = True

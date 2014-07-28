@@ -1,7 +1,7 @@
 from systemofrecord import db
 from sqlalchemy.dialects.postgresql import  TEXT
 
-class Titles(db.Model):
+class Title(db.Model):
 
     __tablename__ = 'titles'
 

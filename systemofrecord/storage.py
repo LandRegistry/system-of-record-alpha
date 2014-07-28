@@ -1,6 +1,6 @@
 from .server import app
 from systemofrecord import db
-from systemofrecord.models import Titles
+from systemofrecord.models import Title
 
 class DBStore(object):
 
@@ -9,12 +9,12 @@ class DBStore(object):
         # (or introduce some chain object to handle validation and
         # then just delegate to some storage mechanism for write of file)
         # TODO save data to PostgresQL DB
-        title = Titles(title_number, str(data))
+        title = Title(title_number, str(data)) # change to store json
         db.session.add(title)
         db.session.commit()
 
     def get_last(self):
-        titles = Titles.query.first()
+        titles = Title.query.first()
         if titles:
             return {'title': {
                 'number':titles.title_number,
@@ -23,7 +23,7 @@ class DBStore(object):
         return []
 
     def get(self, title_number):
-        title = Titles.query.filter_by(title_number=title_number).first()
+        title = Title.query.filter_by(title_number=title_number).first()
         if title:
             app.logger.info("Found title %s" % title)
             return {
@@ -34,12 +34,12 @@ class DBStore(object):
         return None
 
     def list_titles(self):
-        titles = Titles.query
+        titles = Title.query
         if titles:
             app.logger.info("Found some titles")
             all_titles = {} #initialise to append new values
             #all_titles dictionary has title_id as index, then title detail as value.
-            for p in Titles.query:
+            for p in Title.query:
                 all_titles[p.id] = {
                      'title': {
                          'number':   p.title_number,
@@ -50,7 +50,7 @@ class DBStore(object):
 
     def health(self):
         try:
-            Titles.query.count()
+            Title.query.count()
             return True, "DB" 
         except:
             return False, "DB" 

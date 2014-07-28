@@ -10,9 +10,6 @@ storage = DBStore()
 feeder = FeederQueue(app)
 Health(app, checks=[storage.health, feeder.health])
 
-@app.route('/')
-def index():
-  return "OK"
 
 @app.route('/titles/<title_number>', methods=['GET', 'PUT'])
 def title(title_number):
@@ -24,6 +21,7 @@ def title(title_number):
         if title:
             return jsonify(title)
         else:
+            app.logger.info("Could not find title number %s" % title_number)
             return abort(404)
     else:
         storage.put(title_number, request.json)
