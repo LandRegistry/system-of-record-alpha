@@ -13,15 +13,6 @@ class DBStore(object):
         db.session.add(title)
         db.session.commit()
 
-    def get_last(self):
-        titles = Title.query.first()
-        if titles:
-            return {'title': {
-                'number':titles.title_number,
-                'data':titles.data
-            }}
-        return []
-
     def get(self, title_number):
         title = Title.query.filter_by(title_number=title_number).first()
         if title:
