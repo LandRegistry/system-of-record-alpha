@@ -3,6 +3,8 @@ System of Record
 
 [![Build Status](https://travis-ci.org/LandRegistry/system-of-record.svg)](https://travis-ci.org/LandRegistry/system-of-record)
 
+[![Coverage Status](https://img.shields.io/coveralls/LandRegistry/system-of-record.svg)](https://coveralls.io/r/LandRegistry/system-of-record)
+
 ## Storage of minted title entries
 
 Service to create new versions of a title, hashed and signed.
