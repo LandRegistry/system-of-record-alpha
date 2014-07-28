@@ -32,4 +32,9 @@ class FeederQueue(object):
             self.redis = Redis(host=self.redis_url.hostname, port= self.redis_url.port, password= self.redis_url.password)
         return self.redis
 
-
+    def health(self):
+        try:
+            self.__get_queue().info()
+            return True, "Redis"
+        except:
+            return False, "Redis"
