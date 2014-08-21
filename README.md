@@ -84,10 +84,18 @@ There's an intial migration script in the project created using Flask-Migrate so
 
 ```
 python manage.py db upgrade
-
 ```
 
+On heroku run this
+```
+heroku run python manage.py db upgrade --app lr-system-of-record
+```
+
+Run the upgrade command whenever you have additional migrations
+
+
 ### Install and start Redis to enqueue data for the feeder
+
 
 ```
 brew install redis
