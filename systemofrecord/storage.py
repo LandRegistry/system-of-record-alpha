@@ -18,11 +18,7 @@ class DBStore(object):
         title = Title.query.filter_by(title_number=title_number).first()
         if title:
             app.logger.info("Found title %s" % title)
-            return {
-                'title': {
-                    'number':   title.title_number,
-                    'data': title.data
-            }}
+            return title.as_dict() 
         return None
 
     def list_titles(self):
@@ -31,12 +27,8 @@ class DBStore(object):
             app.logger.info("Found some titles")
             all_titles = {} #initialise to append new values
             #all_titles dictionary has title_id as index, then title detail as value.
-            for p in Title.query:
-                all_titles[p.id] = {
-                     'title': {
-                         'number':   p.title_number,
-                        'data': p.data
-                }}
+            for title in Title.query:
+                all_titles[title.id] = title.as_dict() 
             return all_titles
         return {}
 

@@ -1,5 +1,6 @@
 from systemofrecord import db
 from sqlalchemy.dialects.postgresql import  JSON
+import json
 
 class Title(db.Model):
 
@@ -15,3 +16,10 @@ class Title(db.Model):
 
     def __repr__(self):
         return "Title id: %d title number: %s data: %s" % (self.id, self.title_number, self.data)
+
+    def as_dict(self):
+        #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {'title': {
+            'title_number': self.title_number,
+            'data': json.loads(self.data)
+            }}
