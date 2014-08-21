@@ -1,5 +1,5 @@
 from systemofrecord import db
-from sqlalchemy.dialects.postgresql import  TEXT
+from sqlalchemy.dialects.postgresql import  JSON
 
 class Title(db.Model):
 
@@ -7,8 +7,7 @@ class Title(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title_number = db.Column(db.String(64))
-    #data = db.Column('data', JSON)
-    data = db.Column(TEXT)
+    data = db.Column('data', JSON)
 
     def __init__(self, title_number, data):
         self.title_number = title_number

@@ -3,7 +3,6 @@ import json
 import mock
 
 from systemofrecord import server
-from systemofrecord import db
 
 from data import data_from_mint
 from data import title_number
@@ -13,7 +12,6 @@ data_for_the_feeder = data_from_mint['title']
 class SystemOfRecordTestCase(unittest.TestCase):
 
     def setUp(self):
-        db.create_all()
         self.app = server.app.test_client()
 
     @mock.patch("systemofrecord.feeder.FeederQueue.enqueue")
@@ -23,8 +21,9 @@ class SystemOfRecordTestCase(unittest.TestCase):
         mock_put.assert_called_with(title_number, data_from_mint)
         mock_enqueue.assert_called_with(title_number, data_for_the_feeder)
 
+    @mock.patch("systemofrecord.storage.DBStore.count")
     @mock.patch("redis.Redis.info")
-    def test_health_returns_200(self, mock_info):
+    def test_health_returns_200(self, mock_redis, mock_db):
         response = self.app.get('/health')
         assert response.status == '200 OK'
 

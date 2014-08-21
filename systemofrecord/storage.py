@@ -1,6 +1,8 @@
 from .server import app
 from systemofrecord import db
 from systemofrecord.models import Title
+import json
+
 
 class DBStore(object):
 
@@ -8,8 +10,7 @@ class DBStore(object):
         # TODO check data integrity using public key
         # (or introduce some chain object to handle validation and
         # then just delegate to some storage mechanism for write of file)
-        # TODO save data to PostgresQL DB
-        title = Title(title_number, str(data)) # change to store json
+        title = Title(title_number, json.dumps(data))
         db.session.add(title)
         db.session.commit()
 
@@ -39,9 +40,13 @@ class DBStore(object):
             return all_titles
         return {}
 
+    def count(self):
+        return Title.query.count()
+
+
     def health(self):
         try:
-            Title.query.count()
+            self.count()
             return True, "DB" 
         except:
             return False, "DB" 
