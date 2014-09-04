@@ -1,6 +1,3 @@
 #!/bin/bash
 
-source ./environment.sh
-
-python manage.py db upgrade
-python run_dev.py
+APP_ROOT=`pwd` bash ./run_dev.sh
