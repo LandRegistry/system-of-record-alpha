@@ -4,8 +4,8 @@ import urlparse
 import cPickle as pickle
 import logging
 
-class FeederQueue(object):
 
+class FeederQueue(object):
     def __init__(self, app):
         self.redis_url = urlparse.urlparse(app.config.get('REDIS_URL'))
         self.redis_queue_key = app.config.get('REDIS_QUEUE_KEY')
@@ -29,7 +29,9 @@ class FeederQueue(object):
 
     def __get_queue(self):
         if not self.redis:
-            self.redis = Redis(host=self.redis_url.hostname, port= self.redis_url.port, password= self.redis_url.password)
+            self.redis = Redis(host=self.redis_url.hostname,
+                               port=self.redis_url.port,
+                               password=self.redis_url.password)
         return self.redis
 
     def health(self):

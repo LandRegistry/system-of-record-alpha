@@ -1,4 +1,4 @@
-from .server import app
+from ..server import app
 from systemofrecord import db
 from systemofrecord.models import Title
 import json
@@ -18,7 +18,7 @@ class DBStore(object):
         title = Title.query.filter_by(title_number=title_number).first()
         if title:
             app.logger.info("Found title %s" % title)
-            return title.as_dict() 
+            return title.as_dict()
         return None
 
     def list_titles(self):
@@ -28,7 +28,7 @@ class DBStore(object):
             all_titles = {} #initialise to append new values
             #all_titles dictionary has title_id as index, then title detail as value.
             for title in Title.query:
-                all_titles[title.id] = title.as_dict() 
+                all_titles[title.id] = title.as_dict()
             return all_titles
         return {}
 
@@ -39,6 +39,6 @@ class DBStore(object):
     def health(self):
         try:
             self.count()
-            return True, "DB" 
+            return True, "DB"
         except:
-            return False, "DB" 
+            return False, "DB"

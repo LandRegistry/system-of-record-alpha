@@ -2,7 +2,7 @@ from flask import jsonify,  abort, request, make_response
 
 from systemofrecord import app
 
-from .storage import DBStore
+from repository import DBStore
 from .feeder import FeederQueue
 from .health import Health
 
