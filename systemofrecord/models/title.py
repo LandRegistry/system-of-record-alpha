@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, Column, String, Sequence
 from sqlalchemy.dialects.postgresql import JSON
-import json
+import simplejson
 
 from systemofrecord import db
 
@@ -32,9 +32,10 @@ class Title(db.Model):
     def as_dict(self):
         return {
             'title': {
+                'db_id': self.id,
                 'title_number': self.title_number,
                 'creation_timestamp': self.creation_timestamp,
                 'blockchain_index': self.blockchain_index,
-                'data': json.loads(self.data)
+                'data': simplejson.loads(self.data)
             }
         }
