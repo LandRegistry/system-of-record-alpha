@@ -10,7 +10,13 @@ class DBStore(object):
         # TODO check data integrity using public key
         # (or introduce some chain object to handle validation and
         # then just delegate to some storage mechanism for write of file)
-        title = Title(title_number, json.dumps(data))
+
+        title = Title(
+            title_number=title_number,
+            creation_timestamp=1,
+            data=json.dumps(data)
+        )
+
         db.session.add(title)
         db.session.commit()
 

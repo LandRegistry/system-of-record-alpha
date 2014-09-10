@@ -1,11 +1,11 @@
-title_number = "AB1234567"
+title_id = "AB1234567"
 
 data_from_mint = {
         "public_key": "this would be a key",
-        "title_number": title_number,
+        "title_number": title_id,
         "sha256": "a hash of the title below",
         "title": {
-            "title_number":  title_number,
+            "title_number":  title_id,
             "proprietors": [
             {
                 "first_name": "Vile",
@@ -25,7 +25,7 @@ data_from_mint = {
 
         "payment": {
             "price_paid": "3",
-            "titles": [title_number]
+            "titles": [title_id]
         }
     }
 }
