@@ -1,18 +1,18 @@
 import simplejson
-from systemofrecord.repository import DBStore
-from tests.teardown_unittest import TeardownUnittest
 
+from systemofrecord.repository import InvalidTitleIdException, DBStore
+
+from tests.teardown_unittest import TeardownUnittest
 from fixtures import data_from_mint, title_id
 
 
-class TitleRepositoryTestCase(TeardownUnittest):
-    def setUp(self):
-        super(TitleRepositoryTestCase, self).setUp()
-        self.title_repository = DBStore()
+title_repository = DBStore()
 
+
+class TitleRepositoryTestCase(TeardownUnittest):
     def test_can_store_title_data(self):
-        self.title_repository.put(title_number=title_id, data=data_from_mint)
-        loaded_data = self.title_repository.get(title_id)
+        title_repository.store_title(title_number=title_id, data=data_from_mint)
+        loaded_data = title_repository.load_title(title_id)
 
         self.assertIsNotNone(loaded_data)
         loaded_title = loaded_data['title']
@@ -21,5 +21,7 @@ class TitleRepositoryTestCase(TeardownUnittest):
         self.assertIsInstance(loaded_title['blockchain_index'], int)
         title_data = simplejson.loads(loaded_title['data'])
         self.assertEquals(loaded_title['title_number'], title_data['title_number'])
-        
+
+    def test_cannot_store_title_with_title_id_not_matching_json_payload(self):
+        self.assertRaises(InvalidTitleIdException, title_repository.store_title, "foo", data_from_mint)
 
