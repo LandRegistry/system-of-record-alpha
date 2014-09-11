@@ -1,7 +1,6 @@
-from flask import jsonify,  abort, request, make_response
+from flask import jsonify, abort, request, make_response
 
 from systemofrecord import app
-
 from repository import DBStore
 from .feeder import FeederQueue
 from .health import Health
@@ -13,7 +12,7 @@ Health(app, checks=[storage.health, feeder.health])
 
 @app.route('/titles/<title_number>', methods=['GET', 'PUT'])
 def title(title_number):
-    app.logger.debug("Title number %s, data %s" %(title_number, request.json))
+    app.logger.debug("Title number %s, data %s" % (title_number, request.json))
 
     if request.method == 'GET':
         title = storage.load_title(title_number)
@@ -26,10 +25,10 @@ def title(title_number):
         storage.store_title(title_number, request.json)
         app.logger.info("Put title json %s on feeder queue" % request.json['title'])
         feeder.enqueue(title_number, request.json['title'])
-        app.logger.debug("Title number %s, data %s" %(title_number, request.json))
+        app.logger.debug("Title number %s, data %s" % (title_number, request.json))
         return make_response('OK', 201)
 
 # @app.route('/titles')
 # def titles():
-#     titles = storage.list_titles()
+# titles = storage.list_titles()
 #     return jsonify(titles=titles)
