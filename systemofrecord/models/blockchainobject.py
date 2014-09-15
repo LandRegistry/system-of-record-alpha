@@ -1,8 +1,8 @@
 from sqlalchemy import Integer, Column, String, Sequence
 from sqlalchemy.dialects.postgresql import BYTEA
-from zlib import decompress
 import simplejson
 
+from systemofrecord.services.compression_service import decompress
 from systemofrecord import db
 
 
@@ -22,7 +22,7 @@ class BlockchainObject(db.Model):
         self.blockchain_index = blockchain_index
 
     def __repr__(self):
-        return "Title id: %d title number: %s data: %s blockchain_index: %s creation_timestamp: %d" % (
+        return "object id: %d title number: %s data: %s blockchain_index: %s creation_timestamp: %d" % (
             self.id,
             self.object_id,
             self.data,

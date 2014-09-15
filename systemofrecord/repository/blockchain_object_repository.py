@@ -1,5 +1,6 @@
 import simplejson
-from zlib import compress
+
+from systemofrecord.services.compression_service import compress
 
 from systemofrecord import db
 from systemofrecord.models import BlockchainObject
@@ -16,7 +17,7 @@ class BlockchainObjectRepository(object):
         # then just delegate to some storage mechanism for write of file)
 
         try:
-            if object_id != data['title_number']:
+            if object_id != data['title_number']:  # TODO: Change to object_id
                 raise InvalidTitleIdException
         except KeyError:
             raise InvalidTitleIdException
