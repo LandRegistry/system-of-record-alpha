@@ -1,0 +1,3 @@
+from commitbuffer.system_of_record_ingestor import SystemOfRecordIngestor
+
+system_of_record_ingestor = SystemOfRecordIngestor()
