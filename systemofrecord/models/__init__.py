@@ -1,1 +1,1 @@
-from title import Title
+from blockchainobject import BlockchainObject

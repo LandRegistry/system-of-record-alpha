@@ -1,10 +1,10 @@
-from systemofrecord.repository import InvalidTitleIdException, DBStore
+from systemofrecord.repository import InvalidTitleIdException, BlockchainObjectRepository
 
 from tests.teardown_unittest import TeardownUnittest
 from fixtures import data_from_mint, title_id
 
 
-title_repository = DBStore()
+title_repository = BlockchainObjectRepository()
 
 
 class TitleRepositoryTestCase(TeardownUnittest):

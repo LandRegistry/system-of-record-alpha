@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from systemofrecord import server
-from systemofrecord.models import Title
+from systemofrecord.models import BlockchainObject
 
 
 class TeardownUnittest(TestCase):
@@ -9,4 +9,4 @@ class TeardownUnittest(TestCase):
         self.app = server.app.test_client()
 
     def tearDown(self):
-        Title.query.delete()
+        BlockchainObject.query.delete()

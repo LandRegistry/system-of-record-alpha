@@ -24,10 +24,10 @@ db = SQLAlchemy(app)
 
 # We need to import these after 'db' to avoid circular imports
 from systemofrecord.feeder import FeederQueue
-from systemofrecord.repository import DBStore
+from systemofrecord.repository import BlockchainObjectRepository
 
 feeder_queue = FeederQueue(app)
-storage = DBStore()
+storage = BlockchainObjectRepository()
 Health(app, checks=[storage.health, feeder_queue.health])
 
 

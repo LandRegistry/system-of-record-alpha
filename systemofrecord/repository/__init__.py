@@ -1,1 +1,1 @@
-from title_repository import DBStore, InvalidTitleIdException
+from blockchain_object_repository import BlockchainObjectRepository, InvalidTitleIdException
