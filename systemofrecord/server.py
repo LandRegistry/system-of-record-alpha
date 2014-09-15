@@ -15,9 +15,11 @@ def title(title_number):
     app.logger.debug("Title number %s, data %s" % (title_number, request.json))
 
     if request.method == 'GET':
-        title = storage.load_title(title_number)
+        loaded_title = storage.load_title(title_number)
+
+        print "*** loaded_title: " + repr(loaded_title)
         if title:
-            return jsonify(title)
+            return jsonify(loaded_title)
         else:
             app.logger.info("Could not find title number %s" % title_number)
             return abort(404)

@@ -1,5 +1,3 @@
-import simplejson
-
 from systemofrecord.repository import InvalidTitleIdException, DBStore
 
 from tests.teardown_unittest import TeardownUnittest
@@ -19,7 +17,7 @@ class TitleRepositoryTestCase(TeardownUnittest):
         self.assertIsInstance(loaded_title['db_id'], int)
         self.assertIsInstance(loaded_title['creation_timestamp'], int)
         self.assertIsInstance(loaded_title['blockchain_index'], int)
-        title_data = simplejson.loads(loaded_title['data'])
+        title_data = loaded_title['data']
         self.assertEquals(loaded_title['title_number'], title_data['title_number'])
 
     def test_cannot_store_title_with_title_id_not_matching_json_payload(self):

@@ -1,4 +1,5 @@
 import simplejson
+from zlib import compress
 
 from systemofrecord import db
 from systemofrecord.models import Title
@@ -23,14 +24,21 @@ class DBStore(object):
         title = Title(
             title_number=title_number,
             creation_timestamp=1,
-            data=simplejson.dumps(data)
+            data=(compress(simplejson.dumps(data)))
         )
 
         db.session.add(title)
         db.session.commit()
 
     def load_title(self, title_number):
+        print "Loading title " + title_number
+
+        for foo in Title.query:
+            print "* loaded title: " + repr(foo.as_dict())
+
         title = Title.query.filter_by(title_number=title_number).first()
+
+        print "***** title is " + repr(title.as_dict())
 
         if title:
             return title.as_dict()
@@ -38,8 +46,8 @@ class DBStore(object):
             return None
 
     # def list_titles(self):
-    #     titles = Title.query
-    #     if titles:
+    # titles = Title.query
+    # if titles:
     #         all_titles = {}  # initialise to append new values
     #         # all_titles dictionary has title_id as index, then title detail as value.
     #

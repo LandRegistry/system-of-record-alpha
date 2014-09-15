@@ -1,5 +1,6 @@
 from sqlalchemy import Integer, Column, String, Sequence
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import BYTEA
+from zlib import decompress
 import simplejson
 
 from systemofrecord import db
@@ -11,7 +12,7 @@ class Title(db.Model):
     id = Column(Integer, Sequence('title_id_seq'), primary_key=True)
     title_number = Column(String(64))
     creation_timestamp = Column(Integer)
-    data = Column('data', JSON)
+    data = Column('data', BYTEA)
     blockchain_index = Column(Integer, Sequence('blockchain_index_seq'))
 
     def __init__(self, title_number, creation_timestamp, data, blockchain_index=None):
@@ -36,6 +37,6 @@ class Title(db.Model):
                 'title_number': self.title_number,
                 'creation_timestamp': self.creation_timestamp,
                 'blockchain_index': self.blockchain_index,
-                'data': simplejson.loads(self.data)
+                'data': simplejson.loads(decompress(self.data))
             }
         }
