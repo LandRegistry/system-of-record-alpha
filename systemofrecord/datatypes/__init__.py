@@ -1,0 +1,3 @@
+from systemofrecord.datatypes.system_of_record_request_validator import SystemOfRecordRequestValidator
+
+system_of_record_request_validator = SystemOfRecordRequestValidator()
