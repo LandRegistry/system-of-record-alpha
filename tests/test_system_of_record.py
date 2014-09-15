@@ -14,6 +14,7 @@ class SystemOfRecordTestCase(TeardownUnittest):
     @mock.patch("systemofrecord.feeder.FeederQueue.enqueue")
     def test_add_title_should_put_to_db_and_queue_data(self, mock_enqueue):
         self.app.put("/titles/%s" % title_id, data=json.dumps(data_from_mint), content_type="application/json")
+
         mock_enqueue.assert_called_with(title_id, data_for_the_feeder)
 
     @mock.patch("redis.Redis.info")
