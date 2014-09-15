@@ -18,11 +18,12 @@ def title(title_number):
         loaded_title = storage.load_title(title_number)
 
         print "*** loaded_title: " + repr(loaded_title)
-        if title:
+
+        if loaded_title:
             return jsonify(loaded_title)
-        else:
-            app.logger.info("Could not find title number %s" % title_number)
-            return abort(404)
+
+        app.logger.info("Could not find title number %s" % title_number)
+        return abort(404)
     else:
         storage.store_title(title_number, request.json)
         app.logger.info("Put title json %s on feeder queue" % request.json['title'])
