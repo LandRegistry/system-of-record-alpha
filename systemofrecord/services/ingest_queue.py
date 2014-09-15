@@ -4,7 +4,7 @@ from systemofrecord.datatypes import system_of_record_request_validator
 from systemofrecord.services import ingest_queue_provider
 
 
-class IngestQueue(object):
+class AppendToIngestQueue(object):
     def __init__(self):
         self.logger = logging.getLogger('commitbuffer.IngestQueue')
         self.logger.addHandler(logging.StreamHandler())
