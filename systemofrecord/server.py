@@ -6,7 +6,7 @@ from systemofrecord.controllers import load_title_controller, store_title_contro
 
 @app.route('/titles/<title_number>', methods=['GET'])
 def get_title(title_number):
-    return load_title_controller.load_title(title_number)
+    return load_title_controller.load_object(title_number)
 
 
 @app.route('/titles/<title_number>', methods=['PUT'])

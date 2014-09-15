@@ -4,11 +4,11 @@ from systemofrecord import app, storage
 
 
 class LoadTitleController(object):
-    def load_title(self, title_number):
-        loaded_title = storage.load_title(title_number)
+    def load_object(self, object_id):
+        loaded_object = storage.load_object(object_id)
 
-        if loaded_title:
-            return jsonify(loaded_title)
+        if loaded_object:
+            return jsonify(loaded_object)
 
-        app.logger.info("Could not find title number %s" % title_number)
+        app.logger.info("Could not find title number %s" % object_id)
         return abort(404)

@@ -10,19 +10,19 @@ class InvalidTitleIdException(Exception):
 
 
 class BlockchainObjectRepository(object):
-    def store_title(self, title_number, data):
+    def store_object(self, object_id, data):
         # TODO check data integrity using public key
         # (or introduce some chain object to handle validation and
         # then just delegate to some storage mechanism for write of file)
 
         try:
-            if title_number != data['title_number']:
+            if object_id != data['title_number']:
                 raise InvalidTitleIdException
         except KeyError:
             raise InvalidTitleIdException
 
         title = BlockchainObject(
-            title_number=title_number,
+            title_number=object_id,
             creation_timestamp=1,
             data=(compress(simplejson.dumps(data)))
         )
@@ -30,7 +30,7 @@ class BlockchainObjectRepository(object):
         db.session.add(title)
         db.session.commit()
 
-    def load_title(self, title_number):
+    def load_object(self, title_number):
         title = BlockchainObject.query.filter_by(object_id=title_number).first()
 
         if title:
