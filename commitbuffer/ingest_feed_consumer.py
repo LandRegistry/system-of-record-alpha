@@ -1,6 +1,6 @@
 from commitbuffer import system_of_record_ingestor
 
-from systemofrecord.services import queue_provider
+from systemofrecord.services import ingest_queue_provider
 
 
 class IngestFeedConsumer(object):
@@ -11,7 +11,7 @@ class IngestFeedConsumer(object):
         self.current_message = None
 
     def next_message(self):
-        self.current_message = queue_provider.read_from_queue()
+        self.current_message = ingest_queue_provider.read_from_queue()
 
     def run(self):
         while True:
