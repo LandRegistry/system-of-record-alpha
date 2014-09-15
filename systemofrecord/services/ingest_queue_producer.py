@@ -1,10 +1,11 @@
 from flask import logging
 
-from systemofrecord.datatypes import system_of_record_request_validator
+from systemofrecord.datatypes import system_of_record_request_validator as validator
+
 from systemofrecord.services import ingest_queue_provider
 
 
-class AppendToIngestQueue(object):
+class IngestQueueProducer(object):
     def __init__(self):
         self.logger = logging.getLogger('commitbuffer.IngestQueue')
         self.logger.addHandler(logging.StreamHandler())
@@ -12,8 +13,8 @@ class AppendToIngestQueue(object):
 
     def enqueue(self, message):
         try:
-            system_of_record_request_validator.validate(message)
-            ingest_queue_provider.add_to_queue(system_of_record_request_validator.to_canonical_form(message))
+            validator.validate(message)
+            ingest_queue_provider.add_to_queue(validator.to_canonical_form(message))
         except Exception as e:
             self.logger.error("Could not enqueue message: [message: %s] [exception: %s]" % (message, e))
             # TODO: Store failures somewhere. Possible data loss!

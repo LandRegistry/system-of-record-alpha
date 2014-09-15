@@ -1,0 +1,2 @@
+class IngestQueueConsumer(object):
+    pass
