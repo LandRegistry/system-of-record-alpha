@@ -1,7 +1,7 @@
 from commitbuffer import system_of_record_ingestor
 
 
-class InputFeedConsumer(object):
+class IngestFeedConsumer(object):
     def __init__(self, queue, queue_key, workers):
         self.workers = workers
         self.queue_key = queue_key
