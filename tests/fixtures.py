@@ -1,12 +1,12 @@
-title_id = "AB1234567"
-title_id_2 = "BC123454"
+object_id_1 = "AB1234567"
+object_id_2 = "BC123454"
 
 data_from_mint = {
         "public_key": "this would be a key",
-        "title_number": title_id,
+        "title_number": object_id_1,
         "sha256": "a hash of the title below",
         "title": {
-            "title_number":  title_id,
+            "title_number":  object_id_1,
             "proprietors": [
             {
                 "first_name": "Vile",
@@ -26,17 +26,17 @@ data_from_mint = {
 
         "payment": {
             "price_paid": "3",
-            "titles": [title_id]
+            "titles": [object_id_1]
         }
     }
 }
 
 data_from_mint_2 = {
     "public_key": "this would be a key",
-    "title_number": title_id_2,
+    "title_number": object_id_2,
     "sha256": "a hash of the title below",
     "title": {
-        "title_number":  title_id,
+        "title_number":  object_id_1,
         "proprietors": [
             {
                 "first_name": "Vile",
@@ -56,7 +56,11 @@ data_from_mint_2 = {
 
         "payment": {
             "price_paid": "3",
-            "titles": [title_id]
+            "titles": [object_id_1]
         }
     }
+}
+
+ingest_message_1 = {
+
 }

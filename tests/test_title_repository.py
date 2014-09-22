@@ -1,7 +1,7 @@
 from systemofrecord.repository import InvalidTitleIdException, BlockchainObjectRepository
 
 from tests.teardown_unittest import TeardownUnittest
-from fixtures import data_from_mint, title_id
+from fixtures import data_from_mint, object_id_1
 
 
 title_repository = BlockchainObjectRepository()
@@ -9,8 +9,8 @@ title_repository = BlockchainObjectRepository()
 
 class TitleRepositoryTestCase(TeardownUnittest):
     def test_can_store_title_data(self):
-        title_repository.store_object(object_id=title_id, data=data_from_mint)
-        loaded_data = title_repository.load_object(title_id)
+        title_repository.store_object(object_id=object_id_1, data=data_from_mint)
+        loaded_data = title_repository.load_object(object_id_1)
 
         self.assertIsNotNone(loaded_data)
         loaded_title = loaded_data['title']

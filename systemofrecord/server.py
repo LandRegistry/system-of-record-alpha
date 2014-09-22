@@ -12,4 +12,4 @@ def get_object(object_id):
 @app.route('/titles/<object_id>', methods=['PUT'])
 def store_object(object_id):
     app.logger.info("Storing object [object_id: %s], [data: %s]" % (object_id, request.json))
-    return store_title_controller.store_title(object_id, request.json)
+    return store_title_controller.store_object(object_id, request.json)

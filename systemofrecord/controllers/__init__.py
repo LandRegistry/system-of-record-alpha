@@ -1,5 +1,5 @@
-from systemofrecord.controllers.load_title_controller import LoadTitleController
-from systemofrecord.controllers.store_title_controller import StoreTitleController
+from systemofrecord.controllers.load_object_controller import LoadObjectController
+from systemofrecord.controllers.store_object_controller import StoreObjectController
 
-load_title_controller = LoadTitleController()
-store_title_controller = StoreTitleController()
+load_title_controller = LoadObjectController()
+store_title_controller = StoreObjectController()
