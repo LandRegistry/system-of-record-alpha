@@ -23,17 +23,18 @@ valid_system_of_record_input_message = {
         'schema_version': 1
     },
 
-    'tags': [
-        {
-            'tag_type': 'version',
-            'tag_id': 'foo',
-            'tag_uri': "http://sysofrec/tags/foo",
-        }
-    ],
 
     'object': {
         'object_id': 'AB12345',
-        'data': '<data>'
+        'data': '<data>',
+
+        'tags': [
+            {
+                'tag_type': 'version',
+                'tag_id': 'foo',
+                'tag_uri': "http://sysofrec/tags/foo",
+                }
+        ],
     }
 }
 
@@ -58,17 +59,41 @@ invalid_message_without_schema_version = {
         'reason_for_change': "str",
     },
 
-    'tags': [
-        {
-            'tag_type': 'version',
-            'tag_id': 'foo',
-            'tag_uri': "http://sysofrec/tags/foo",
-        }
-    ],
 
     'object': {
         'object_id': 'AB12345',
-        'data': '<data>'
+        'data': '<data>',
+
+        'tags': [
+            {
+                'tag_type': 'version',
+                'tag_id': 'foo',
+                'tag_uri': "http://sysofrec/tags/foo",
+                }
+        ],
+    }
+}
+
+invalid_message_with_extra_keys = {
+    'object_info': {
+        'created_by': 'The Mint',
+        'initial_request_timestamp': long(123456),
+        'reason_for_change': "str",
+        },
+
+    'extra-key': 'foo',
+
+    'object': {
+        'object_id': 'AB12345',
+        'data': '<data>',
+
+        'tags': [
+            {
+                'tag_type': 'version',
+                'tag_id': 'foo',
+                'tag_uri': "http://sysofrec/tags/foo",
+                }
+        ],
     }
 }
 
@@ -79,12 +104,4 @@ invalid_message_without_object = {
         'reason_for_change': "str",
         'schema_version': 1
     },
-
-    'tags': [
-        {
-            'tag_type': 'version',
-            'tag_id': 'foo',
-            'tag_uri': "http://sysofrec/tags/foo",
-        }
-    ],
 }

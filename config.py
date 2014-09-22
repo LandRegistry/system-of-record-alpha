@@ -6,6 +6,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     REDIS_URL = os.environ['REDIS_URL']
     REDIS_QUEUE_KEY = os.environ['REDIS_QUEUE_KEY']
+    INGEST_QUEUE_NAME = os.environ['INGEST_QUEUE_NAME']
 
 
 class DevelopmentConfig(Config):
@@ -15,11 +16,4 @@ class DevelopmentConfig(Config):
 class TestConfig(DevelopmentConfig):
     TESTING = True
     DEBUG = True
-
-
-class DockerConfig(Config):
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SYSOFRECDB_1_PORT_5432_TCP', '').replace('tcp://',
-                                                                                       'postgresql://docker:docker@') + '/docker'
-    REDIS_URL = os.environ.get('REDIS_1_PORT_6379_TCP', '').replace('tcp://', 'http://')
 

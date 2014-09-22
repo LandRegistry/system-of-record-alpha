@@ -1,12 +1,11 @@
 from systemofrecord.datatypes import system_of_record_request_validator as validator
 
 from systemofrecord.services import ingest_queue
-from systemofrecord.services.configure_logging import configure_logging
-
+from systemofrecord import configure_logging
 
 class IngestQueueProducer(object):
     def __init__(self):
-        self.logger = configure_logging()
+        self.logger = configure_logging(self)
 
     def enqueue(self, message):
         try:

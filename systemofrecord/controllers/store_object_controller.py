@@ -1,8 +1,7 @@
 from flask import make_response
 
-from systemofrecord.services.configure_logging import configure_logging
 from systemofrecord.repository import blockchain_repository
-from systemofrecord import feeder_queue
+from systemofrecord import feeder_queue, configure_logging
 
 
 class StoreObjectController(object):

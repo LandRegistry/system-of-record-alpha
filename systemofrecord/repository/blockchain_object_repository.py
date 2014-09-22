@@ -19,7 +19,7 @@ class BlockchainObjectRepository(object):
             if object_id != data['object']['object_id']:  # TODO: Change to object_id
                 raise InvalidTitleIdException
         except KeyError:
-            raise InvalidTitleIdException
+            raise InvalidTitleIdException()
 
         title = BlockchainObject(
             object_id=object_id,

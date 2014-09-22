@@ -17,3 +17,4 @@ class SystemOfRecordRequestValidatorTestCase(TestCase):
     def test_does_not_accept_invalid_message(self):
         self.assertRaises(DataDoesNotMatchSchemaException, system_of_record_request_validator.validate, invalid_message_without_object)
         self.assertRaises(DataDoesNotMatchSchemaException, system_of_record_request_validator.validate, invalid_message_without_schema_version)
+        self.assertRaises(DataDoesNotMatchSchemaException, system_of_record_request_validator.validate, invalid_message_with_extra_keys)

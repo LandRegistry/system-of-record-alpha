@@ -1,4 +1,4 @@
-from systemofrecord.services.configure_logging import configure_logging
+from systemofrecord import configure_logging
 
 from systemofrecord.repository import blockchain_repository
 from systemofrecord.datatypes import system_of_record_request_validator
@@ -11,11 +11,11 @@ class SystemOfRecordIngestor(object):
 
     def ingest(self, message):
         try:
-            if message:
+            if message is not None:
                 system_of_record_request_validator.validate(message)
                 blockchain_repository.store_object(message['object']['object_id'], message)
             else:
-                self.logger.error("Attempted to ingest null message!")
+                self.logger.error("Attempted to ingest null message: " + repr(message))
         except DataDoesNotMatchSchemaException as e:
-            self.logger.error("Could not validate message: %s error %s") % (repr(message), repr(e))
+            self.logger.error("Could not validate message: %s error: %s" % (repr(message), repr(e)))
             raise e

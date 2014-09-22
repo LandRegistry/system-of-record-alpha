@@ -9,16 +9,16 @@ schema = {
         Required('schema_version'): int
     },
 
-    Optional('tags'): [
-        {
-            Required('tag_type'): str,
-            Required('tag_id'): str,
-        }
-    ],
-
     Required('object'): {
         Required('object_id'): str,
-        Optional('data'): str
+        Optional('data'): str,
+
+        Optional('tags'): [
+            {
+                Required('tag_type'): str,
+                Required('tag_id'): str,
+            }
+        ]
     }
 }
 

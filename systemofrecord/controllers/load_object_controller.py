@@ -1,6 +1,7 @@
 from flask import jsonify, abort
 
 from systemofrecord import app
+
 from systemofrecord.repository import blockchain_repository
 
 
@@ -11,5 +12,5 @@ class LoadObjectController(object):
         if loaded_object:
             return jsonify(loaded_object)
 
-        app.logger.info("Could not find title number %s" % object_id)
+        app.logger.info("Could not find object with ID: %s" % object_id)
         return abort(404)

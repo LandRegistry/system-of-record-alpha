@@ -5,7 +5,6 @@ from cPickle import dumps
 from systemofrecord import app
 
 
-
 # This module is a wrapper around Redis for queueing features. If we wish to switch
 # queueing provider then we only need to change this wrapper.
 
@@ -18,6 +17,12 @@ class QueueProvider(object):
 
     def read_from_queue(self):
         raise Exception('Not implemented')
+
+    def queue_size(self):
+        raise Exception('Not implemented')
+
+    def is_empty(self):
+        return self.queue_size() == 0
 
     def health(self):
         raise Exception('Not implemented')
@@ -39,6 +44,9 @@ class RedisQueueProvider(QueueProvider):
 
     def read_from_queue(self):
         return self.redis_server.blpop(self.queue_name)
+
+    def queue_size(self):
+        return self.redis_server.llen(self.queue_name)
 
     def health(self):
         try:
