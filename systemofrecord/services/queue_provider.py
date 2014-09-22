@@ -1,6 +1,6 @@
 from redis import Redis
 import urlparse
-from cPickle import dumps
+from cPickle import dumps, loads
 
 from systemofrecord import app
 
@@ -23,7 +23,7 @@ class RedisQueueProvider(object):
         self.redis_server.rpush(self.queue_name, dumps(data))
 
     def read_from_queue(self):
-        return self.redis_server.blpop(self.queue_name)
+        return loads(self.redis_server.blpop(self.queue_name)[1])
 
     def queue_size(self):
         return self.redis_server.llen(self.queue_name)
