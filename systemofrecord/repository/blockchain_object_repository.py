@@ -1,7 +1,7 @@
 import simplejson
 
 from systemofrecord.services.compression_service import compress
-from systemofrecord import db
+from systemofrecord import db, configure_logging
 from systemofrecord.models import BlockchainObject
 
 
@@ -10,6 +10,9 @@ class InvalidTitleIdException(Exception):
 
 
 class BlockchainObjectRepository(object):
+    def __init__(self):
+        self.logger = configure_logging(self)
+
     def store_object(self, object_id, data):
         # TODO check data integrity using public key
         # (or introduce some chain object to handle validation and
@@ -21,17 +24,18 @@ class BlockchainObjectRepository(object):
         except KeyError:
             raise InvalidTitleIdException()
 
-        title = BlockchainObject(
+        obj_to_store = BlockchainObject(
             object_id=object_id,
             creation_timestamp=1,
             data=compress(simplejson.dumps(data))
         )
 
-        db.session.add(title)
+        db.session.add(obj_to_store)
+        self.logger.info("Storing object %s" % object_id)
         db.session.commit()
 
-    def load_object(self, title_number):
-        title = BlockchainObject.query.filter_by(object_id=title_number).first()
+    def load_object(self, object_id):
+        title = BlockchainObject.query.filter_by(object_id=object_id).first()
 
         if title:
             return title.as_dict()

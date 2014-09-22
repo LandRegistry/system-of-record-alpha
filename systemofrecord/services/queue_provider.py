@@ -5,32 +5,12 @@ from cPickle import dumps
 from systemofrecord import app
 
 
+
 # This module is a wrapper around Redis for queueing features. If we wish to switch
 # queueing provider then we only need to change this wrapper.
-
-class QueueProvider(object):
+class RedisQueueProvider(object):
     def __init__(self, queue_name):
         self.queue_name = queue_name
-
-    def add_to_queue(self, data):
-        raise Exception('Not implemented')
-
-    def read_from_queue(self):
-        raise Exception('Not implemented')
-
-    def queue_size(self):
-        raise Exception('Not implemented')
-
-    def is_empty(self):
-        return self.queue_size() == 0
-
-    def health(self):
-        raise Exception('Not implemented')
-
-
-class RedisQueueProvider(QueueProvider):
-    def __init__(self, queue_name):
-        super(RedisQueueProvider, self).__init__(queue_name)
         redis_url = urlparse.urlparse(app.config.get('REDIS_URL'))
 
         self.redis_server = Redis(
@@ -47,6 +27,9 @@ class RedisQueueProvider(QueueProvider):
 
     def queue_size(self):
         return self.redis_server.llen(self.queue_name)
+
+    def is_empty(self):
+        return self.queue_size() == 0
 
     def health(self):
         try:

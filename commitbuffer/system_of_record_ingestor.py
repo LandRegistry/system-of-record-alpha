@@ -10,6 +10,8 @@ class SystemOfRecordIngestor(object):
         self.logger = configure_logging(self)
 
     def ingest(self, message):
+        self.logger.info("Appending to blockchain: %s" % str(message))
+
         try:
             if message is not None:
                 system_of_record_request_validator.validate(message)
