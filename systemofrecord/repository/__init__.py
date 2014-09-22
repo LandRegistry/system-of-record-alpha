@@ -1,1 +1,3 @@
 from blockchain_object_repository import BlockchainObjectRepository, InvalidTitleIdException
+
+blockchain_repository = BlockchainObjectRepository()

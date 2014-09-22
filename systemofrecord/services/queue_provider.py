@@ -38,7 +38,7 @@ class RedisQueueProvider(QueueProvider):
         self.redis_server.rpush(self.queue_name, dumps(data))
 
     def read_from_queue(self):
-        return self.queue.blpop(self.queue_name)
+        return self.redis_server.blpop(self.queue_name)
 
     def health(self):
         try:

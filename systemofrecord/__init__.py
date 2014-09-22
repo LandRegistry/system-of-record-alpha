@@ -4,11 +4,9 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
 
-from systemofrecord.health import Health
-
-
 app = Flask(__name__)
 app.config.from_object(os.environ.get('SETTINGS'))
+db = SQLAlchemy(app)
 
 # Sentry exception reporting
 if 'SENTRY_DSN' in os.environ:
@@ -20,14 +18,12 @@ if not app.debug:
 
 app.logger.info("\nConfiguration\n%s\n" % app.config)
 
-db = SQLAlchemy(app)
-
-# We need to import these after 'db' to avoid circular imports
+from systemofrecord.health import Health
+from systemofrecord.repository import blockchain_repository
 from systemofrecord.feeder import FeederQueue
-from systemofrecord.repository import BlockchainObjectRepository
 
 feeder_queue = FeederQueue(app)
-storage = BlockchainObjectRepository()
-Health(app, checks=[storage.health, feeder_queue.health])
+
+Health(app, checks=[blockchain_repository.health, feeder_queue.health])
 
 

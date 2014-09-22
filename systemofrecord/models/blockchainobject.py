@@ -15,8 +15,8 @@ class BlockchainObject(db.Model):
     data = Column('data', BYTEA)
     blockchain_index = Column(Integer, Sequence('blockchain_index_seq'))
 
-    def __init__(self, title_number, creation_timestamp, data, blockchain_index=None):
-        self.object_id = title_number
+    def __init__(self, object_id, creation_timestamp, data, blockchain_index=None):
+        self.object_id = object_id
         self.data = data
         self.creation_timestamp = creation_timestamp
         self.blockchain_index = blockchain_index
@@ -32,9 +32,9 @@ class BlockchainObject(db.Model):
 
     def as_dict(self):
         return {
-            'title': {
+            'object': {
                 'db_id': self.id,
-                'title_number': self.object_id,
+                'object_id': self.object_id,
                 'creation_timestamp': self.creation_timestamp,
                 'blockchain_index': self.blockchain_index,
                 'data': simplejson.loads(decompress(self.data))

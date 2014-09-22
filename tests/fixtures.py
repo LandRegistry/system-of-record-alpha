@@ -60,7 +60,3 @@ data_from_mint_2 = {
         }
     }
 }
-
-ingest_message_1 = {
-
-}
