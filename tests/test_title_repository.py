@@ -13,11 +13,11 @@ class TitleRepositoryTestCase(TeardownUnittest):
         loaded_data = title_repository.load_object(test_object_id)
 
         self.assertIsNotNone(loaded_data)
-        loaded_object = loaded_data['object']
-        self.assertIsInstance(loaded_object['db_id'], int)
-        self.assertIsInstance(loaded_object['creation_timestamp'], int)
-        self.assertIsInstance(loaded_object['blockchain_index'], int)
-        self.assertEquals(loaded_object['object_id'], test_object_id)
+        loaded_object_info = loaded_data['object_info']
+        self.assertIsInstance(loaded_object_info['db_id'], int)
+        self.assertIsInstance(loaded_object_info['creation_timestamp'], int)
+        self.assertIsInstance(loaded_object_info['blockchain_index'], int)
+        self.assertEquals(loaded_data['object']['object_id'], test_object_id)
 
     def test_cannot_store_title_with_title_id_not_matching_json_payload(self):
         self.assertRaises(InvalidTitleIdException, title_repository.store_object, "foo", valid_message_without_tags)

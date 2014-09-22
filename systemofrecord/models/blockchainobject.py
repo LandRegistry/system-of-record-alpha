@@ -31,12 +31,12 @@ class BlockchainObject(db.Model):
         )
 
     def as_dict(self):
-        return {
-            'object': {
-                'db_id': self.id,
-                'object_id': self.object_id,
-                'creation_timestamp': self.creation_timestamp,
-                'blockchain_index': self.blockchain_index,
-                'data': simplejson.loads(decompress(self.data))
-            }
-        }
+        obj = simplejson.loads(decompress(self.data))
+        info = obj['object_info']
+        assert info
+
+        info['db_id'] = self.id
+        info['creation_timestamp'] = self.creation_timestamp
+        info['blockchain_index'] = self.blockchain_index
+
+        return obj

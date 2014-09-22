@@ -1,3 +1,19 @@
+# strip out any of the generated fields that get put on an object when it is loaded
+# to simplify comparisons. We'll check that the fields are present before we delete
+# them, as their absence suggests that a load operation did not work correctly.
+def remove_generated_fields_from_loaded_object(obj):
+    info = obj['object_info']
+    assert info
+    assert info['db_id']
+    assert info['creation_timestamp']
+    assert info['blockchain_index']
+
+    del info['db_id']
+    del info['creation_timestamp']
+    del info['blockchain_index']
+    return obj
+
+
 valid_system_of_record_input_message = {
 
     'object_info': {
