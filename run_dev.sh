@@ -2,4 +2,5 @@
 
 
 ./db/upgrade_database.sh
-python run_dev.py
+
+foreman start -f Procfile_for_dev_env 

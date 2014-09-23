@@ -1,12 +1,16 @@
+from time import sleep
+
 from systemofrecord import configure_logging
 from systemofrecord.services import ingest_queue
 from datatypes.exceptions import DataDoesNotMatchSchemaException
 from commitbuffer import blockchain_ingestor
 
+
 class IngestQueueConsumer(object):
-    def __init__(self, queue, queue_key):
+    def __init__(self, queue, queue_key, sleep_time_in_seconds=60):
         self.queue_key = queue_key
         self.queue = queue
+        self.sleep_time_in_seconds = sleep_time_in_seconds
         self.logger = configure_logging(self)
 
     def process_queue(self):
@@ -24,8 +28,7 @@ class IngestQueueConsumer(object):
         else:
             self.logger.info("Ingest queue is empty.")
 
-
     def run(self):
         while True:
             self.process_queue()
-            # TODO: Sleep for configured time
+            sleep(self.sleep_time_in_seconds)
