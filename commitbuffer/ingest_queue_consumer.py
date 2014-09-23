@@ -7,10 +7,10 @@ from commitbuffer import blockchain_ingestor
 
 
 class IngestQueueConsumer(object):
-    def __init__(self, queue, queue_key, sleep_time_in_seconds=60):
+    def __init__(self, queue, queue_key, poll_interval=60):
         self.queue_key = queue_key
         self.queue = queue
-        self.sleep_time_in_seconds = sleep_time_in_seconds
+        self.sleep_time_in_seconds = poll_interval
         self.logger = configure_logging(self)
 
     def process_queue(self):

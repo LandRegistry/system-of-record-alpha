@@ -7,6 +7,7 @@ class Config(object):
     REDIS_URL = os.environ['REDIS_URL']
     REDIS_QUEUE_KEY = os.environ['REDIS_QUEUE_KEY']
     INGEST_QUEUE_NAME = os.environ['INGEST_QUEUE_NAME']
+    INGEST_QUEUE_POLL_INTERVAL_IN_SECONDS = float(os.environ['INGEST_QUEUE_POLL_INTERVAL_IN_SECONDS'])
 
 
 class DevelopmentConfig(Config):
