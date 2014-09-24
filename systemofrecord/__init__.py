@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config.from_object(os.environ.get('SETTINGS'))
 db = SQLAlchemy(app)
 
+
 def configure_logging(obj):
     logger = logging.getLogger(obj.__class__.__name__)
 
@@ -30,18 +31,9 @@ app.logger.info("\nConfiguration\n%s\n" % app.config)
 
 from systemofrecord.health import Health
 from systemofrecord.repository import blockchain_repository
-from systemofrecord.feeder import FeederQueue
 
-feeder_queue = FeederQueue(app)
+from systemofrecord.services import feeder_queue, ingest_queue
 
-from systemofrecord.services.queue_provider import RedisQueueProvider
-ingest_queue = RedisQueueProvider(app.config.get('INGEST_QUEUE_NAME'))
-
-from systemofrecord.services.ingest_queue_producer import IngestQueueProducer
-
-ingest_queue_producer = IngestQueueProducer()
-
-
-Health(app, checks=[blockchain_repository.health, feeder_queue.health])
+Health(app, checks=[blockchain_repository.health, feeder_queue.health, ingest_queue.health])
 
 

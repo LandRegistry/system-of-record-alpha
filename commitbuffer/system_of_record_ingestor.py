@@ -18,7 +18,7 @@ class SystemOfRecordIngestor(object):
                 system_of_record_request_validator.validate(message)
                 object_id = message['object']['object_id']
                 blockchain_repository.store_object(object_id, message)
-                feeder_queue.enqueue(object_id, message)
+                feeder_queue.add_to_queue(message)
             else:
                 self.logger.error("Attempted to ingest null message: " + repr(message))
         except DataDoesNotMatchSchemaException as e:
