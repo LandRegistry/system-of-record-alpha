@@ -1,4 +1,4 @@
-from flask import request
+from systemofrecord.services.json_conversion import parse_json_from_request
 
 from systemofrecord import app
 from systemofrecord.controllers import load_title_controller, store_title_controller
@@ -11,5 +11,5 @@ def get_object(object_id):
 
 @app.route('/titles/<object_id>', methods=['PUT'])
 def store_object(object_id):
-    app.logger.info("Storing object [object_id: %s], [data: %s]" % (object_id, request.json))
-    return store_title_controller.store_object(object_id, request.json)
+    app.logger.info("Requested to store object_id: %s" % object_id)
+    return store_title_controller.store_object(object_id, parse_json_from_request())

@@ -10,7 +10,6 @@ db = SQLAlchemy(app)
 
 def configure_logging(obj):
     logger = logging.getLogger(obj.__class__.__name__)
-    logger.addHandler(logging.StreamHandler())
 
     if app.config['DEBUG']:
         logger.setLevel(logging.DEBUG)

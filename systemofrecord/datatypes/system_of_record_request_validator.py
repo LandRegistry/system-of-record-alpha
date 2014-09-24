@@ -1,10 +1,10 @@
 from datatypes.core import DictionaryValidator
-from voluptuous import Required, Optional
+from voluptuous import Required, Optional, Match
 
 schema = {
     Required('object_info'): {
         Optional('created_by'): str,
-        Required('initial_request_timestamp'): long,
+        Required('initial_request_timestamp'): Match("\d+"),
         Optional('reason_for_change'): str,
         Required('schema_version'): int
     },

@@ -15,5 +15,5 @@ class StoreObjectController(object):
         if object_id != message['object']['object_id']:
             raise Exception("Object ID does not match message ID")
 
-        ingest_queue_producer.enqueue(object_id, message)
+        ingest_queue_producer.enqueue(message)
         return make_response('OK', 201)

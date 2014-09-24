@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 # strip out any of the generated fields that get put on an object when it is loaded
 # to simplify comparisons. We'll check that the fields are present before we delete
 # them, as their absence suggests that a load operation did not work correctly.
@@ -18,7 +21,7 @@ valid_system_of_record_input_message = {
 
     'object_info': {
         'created_by': 'The Mint',
-        'initial_request_timestamp': long(123456),
+        'initial_request_timestamp': '123456',
         'reason_for_change': "str",
         'schema_version': 1
     },
@@ -41,7 +44,7 @@ valid_system_of_record_input_message = {
 valid_message_without_tags = {
     'object_info': {
         'created_by': 'The Mint',
-        'initial_request_timestamp': long(123456),
+        'initial_request_timestamp': '123456',
         'reason_for_change': "str",
         'schema_version': 1
     },
@@ -55,7 +58,7 @@ valid_message_without_tags = {
 invalid_message_without_schema_version = {
     'object_info': {
         'created_by': 'The Mint',
-        'initial_request_timestamp': long(123456),
+        'initial_request_timestamp': '123456',
         'reason_for_change': "str",
     },
 
@@ -77,7 +80,7 @@ invalid_message_without_schema_version = {
 invalid_message_with_extra_keys = {
     'object_info': {
         'created_by': 'The Mint',
-        'initial_request_timestamp': long(123456),
+        'initial_request_timestamp': '123456',
         'reason_for_change': "str",
         },
 
@@ -100,7 +103,7 @@ invalid_message_with_extra_keys = {
 invalid_message_without_object = {
     'object_info': {
         'created_by': 'The Mint',
-        'initial_request_timestamp': long(123456),
+        'initial_request_timestamp': '123456',
         'reason_for_change': "str",
         'schema_version': 1
     },
