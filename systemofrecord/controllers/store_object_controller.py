@@ -1,15 +1,19 @@
 from flask import make_response
 
-from systemofrecord.repository import blockchain_repository
-from systemofrecord import feeder_queue, configure_logging
+from systemofrecord.services import ingest_queue_producer
+from systemofrecord.datatypes import system_of_record_request_validator
+from systemofrecord import configure_logging
 
 
 class StoreObjectController(object):
     def __init__(self):
         self.logger = configure_logging(self)
 
-    def store_object(self, object_id, object):
-        blockchain_repository.store_object(object_id, object)
-        self.logger.info("Put title json %s on feeder queue" % object['object']['object_id'])
-        feeder_queue.enqueue(object_id, object)
+    def store_object(self, object_id, message):
+        system_of_record_request_validator.validate(message)
+
+        if object_id != message['object']['object_id']:
+            raise Exception("Object ID does not match message ID")
+
+        ingest_queue_producer.enqueue(object_id, message)
         return make_response('OK', 201)

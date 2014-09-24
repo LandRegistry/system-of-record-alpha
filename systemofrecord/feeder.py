@@ -3,6 +3,7 @@ from redis import Redis
 import urlparse
 import cPickle as pickle
 import logging
+from systemofrecord import configure_logging
 
 
 class FeederQueue(object):
@@ -10,9 +11,7 @@ class FeederQueue(object):
         self.redis_url = urlparse.urlparse(app.config.get('REDIS_URL'))
         self.redis_queue_key = app.config.get('REDIS_QUEUE_KEY')
         self.redis = None
-        self.logger = logging.getLogger('systemofrecord.feeder.FeederQueue')
-        self.logger.addHandler(logging.StreamHandler())
-        self.logger.setLevel(logging.INFO)
+        self.logger = configure_logging(self)
 
     def enqueue(self, number, json):
         try:
