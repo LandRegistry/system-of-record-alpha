@@ -1,5 +1,4 @@
-import simplejson
-
+from systemofrecord.services.json_conversion import to_json
 from systemofrecord.services.compression_service import compress
 from systemofrecord import db, configure_logging
 from systemofrecord.models import BlockchainObject
@@ -19,7 +18,7 @@ class BlockchainObjectRepository(object):
         # then just delegate to some storage mechanism for write of file)
 
         try:
-            if object_id != data['object']['object_id']:  # TODO: Change to object_id
+            if object_id != data['object']['object_id']:
                 raise InvalidTitleIdException
         except KeyError:
             raise InvalidTitleIdException()
@@ -27,7 +26,7 @@ class BlockchainObjectRepository(object):
         obj_to_store = BlockchainObject(
             object_id=object_id,
             creation_timestamp=1,
-            data=compress(simplejson.dumps(data))
+            data=compress(to_json(data)) # TODO: We assume all objects are JSON here...
         )
 
         db.session.add(obj_to_store)

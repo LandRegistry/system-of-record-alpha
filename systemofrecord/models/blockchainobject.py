@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, Column, String, Sequence
 from sqlalchemy.dialects.postgresql import BYTEA
-import simplejson
 
+from systemofrecord.services.json_conversion import from_json
 from systemofrecord.services.compression_service import decompress
 from systemofrecord import db
 
@@ -31,8 +31,8 @@ class BlockchainObject(db.Model):
         )
 
     def as_dict(self):
-        obj = simplejson.loads(decompress(self.data))
-        info = obj['object_info']
+        obj = from_json(decompress(self.data))
+        info = obj['object']
         assert info
 
         info['db_id'] = self.id

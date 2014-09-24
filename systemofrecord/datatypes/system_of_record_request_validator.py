@@ -2,16 +2,14 @@ from datatypes.core import DictionaryValidator
 from voluptuous import Required, Optional, Match
 
 schema = {
-    Required('object_info'): {
-        Optional('created_by'): str,
-        Required('initial_request_timestamp'): Match("\d+"),
-        Optional('reason_for_change'): str,
-        Required('schema_version'): int
-    },
+    Required('schema_version'): int,
 
     Required('object'): {
         Required('object_id'): str,
-        Optional('data'): str,
+        Required('data'): str,
+        Optional('created_by'): str,
+        Optional('initial_request_timestamp'): Match("\d+"),
+        Optional('reason_for_change'): str,
 
         Optional('tags'): [
             {
