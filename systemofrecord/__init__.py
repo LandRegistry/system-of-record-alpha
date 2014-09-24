@@ -30,10 +30,10 @@ if not app.debug:
 app.logger.info("\nConfiguration\n%s\n" % app.config)
 
 from systemofrecord.health import Health
-from systemofrecord.repository import blockchain_repository
+from systemofrecord.repository import blockchain_object_repository
 
 from systemofrecord.services import feeder_queue, ingest_queue
 
-Health(app, checks=[blockchain_repository.health, feeder_queue.health, ingest_queue.health])
+Health(app, checks=[blockchain_object_repository.health, feeder_queue.health, ingest_queue.health])
 
 

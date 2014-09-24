@@ -1,6 +1,6 @@
 from systemofrecord import configure_logging
 
-from systemofrecord.repository import blockchain_repository
+from systemofrecord.repository import blockchain_object_repository
 from systemofrecord.datatypes import system_of_record_request_validator
 from systemofrecord import feeder_queue
 from datatypes.exceptions import DataDoesNotMatchSchemaException
@@ -17,7 +17,7 @@ class SystemOfRecordIngestor(object):
             if message is not None:
                 system_of_record_request_validator.validate(message)
                 object_id = message['object']['object_id']
-                blockchain_repository.store_object(object_id, message)
+                blockchain_object_repository.store_object(object_id, message)
                 feeder_queue.add_to_queue(message)
             else:
                 self.logger.error("Attempted to ingest null message: " + repr(message))

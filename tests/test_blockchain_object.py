@@ -1,10 +1,10 @@
-from systemofrecord.repository import InvalidTitleIdException, BlockchainObjectRepository
+from systemofrecord.repository import  blockchain_object_repository
+from systemofrecord.repository.message_id_validator import InvalidTitleIdException
 from tests.system_of_record_message_fixtures import valid_message_without_tags
 
 from tests.teardown_unittest import TeardownUnittest
 
 test_object_id = valid_message_without_tags['object']['object_id']
-blockchain_object_repository = BlockchainObjectRepository()
 
 
 class BlockchainObjectRepositoryTestCase(TeardownUnittest):

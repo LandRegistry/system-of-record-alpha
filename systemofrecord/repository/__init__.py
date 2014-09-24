@@ -1,3 +1,3 @@
-from blockchain_object_repository import BlockchainObjectRepository, InvalidTitleIdException
+from systemofrecord.repository.blockchain_object_repository import BlockchainObjectRepository
 
-blockchain_repository = BlockchainObjectRepository()
+blockchain_object_repository = BlockchainObjectRepository()

@@ -1,5 +1,5 @@
 from datatypes.core import DictionaryValidator
-from voluptuous import Required, Optional, Match
+from voluptuous import Required, Optional, Coerce
 
 schema = {
     Required('schema_version'): int,
@@ -8,7 +8,7 @@ schema = {
         Required('object_id'): str,
         Required('data'): str,
         Optional('created_by'): str,
-        Optional('initial_request_timestamp'): Match("\d+"),
+        Optional('initial_request_timestamp'): Coerce(long),
         Optional('reason_for_change'): str,
 
         Optional('tags'): [

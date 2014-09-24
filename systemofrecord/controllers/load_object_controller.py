@@ -2,12 +2,12 @@ from flask import jsonify, abort
 
 from systemofrecord import app
 
-from systemofrecord.repository import blockchain_repository
+from systemofrecord.repository import blockchain_object_repository
 
 
 class LoadObjectController(object):
     def load_object(self, object_id):
-        loaded_object = blockchain_repository.load_object(object_id)
+        loaded_object = blockchain_object_repository.load_object(object_id)
 
         if loaded_object:
             return jsonify(loaded_object)

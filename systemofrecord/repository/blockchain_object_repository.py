@@ -1,11 +1,9 @@
+from systemofrecord.repository.message_id_validator import check_object_id_matches_id_in_message
 from systemofrecord.services.json_conversion import to_json
+
 from systemofrecord.services.compression_service import compress
 from systemofrecord import db, configure_logging
 from systemofrecord.models import BlockchainObject
-
-
-class InvalidTitleIdException(Exception):
-    pass
 
 
 class BlockchainObjectRepository(object):
@@ -13,20 +11,12 @@ class BlockchainObjectRepository(object):
         self.logger = configure_logging(self)
 
     def store_object(self, object_id, data):
-        # TODO check data integrity using public key
-        # (or introduce some chain object to handle validation and
-        # then just delegate to some storage mechanism for write of file)
-
-        try:
-            if object_id != data['object']['object_id']:
-                raise InvalidTitleIdException
-        except KeyError:
-            raise InvalidTitleIdException()
+        check_object_id_matches_id_in_message(data, object_id)
 
         obj_to_store = BlockchainObject(
             object_id=object_id,
             creation_timestamp=1,
-            data=compress(to_json(data)) # TODO: We assume all objects are JSON here...
+            data=compress(to_json(data))  # TODO: We assume all objects are JSON here...
         )
 
         db.session.add(obj_to_store)
