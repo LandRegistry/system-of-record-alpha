@@ -1,9 +1,36 @@
-from sqlalchemy import Integer, Column, String, Sequence
 from sqlalchemy.dialects.postgresql import BYTEA
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, Sequence, String, ForeignKey
 
 from systemofrecord.services.json_conversion import from_json
 from systemofrecord.services.compression_service import decompress
 from systemofrecord import db
+
+
+class Chain(db.Model):
+    __tablename__ = 'chain'
+
+    id = Column(Integer, Sequence('tag_id_seq'), primary_key=True)
+    name = Column(String)
+    value = Column(String)
+    record_id = Column(Integer, ForeignKey('blockchain.id'))
+    record_seq = Column(Integer)
+
+    def __init__(self, chain_id, name, value, record_id, record_seq):
+        self.id = chain_id
+        self.name = name
+        self.value = value
+        self.record_id = record_id
+        self.record_seq = record_seq
+
+    def __repr__(self):
+        return "tag id: %d name: %s value: %s record_id: %d, record_seq: %d" % (
+            self.id,
+            self.name,
+            self.value,
+            self.record_id,
+            self.record_seq
+        )
 
 
 class BlockchainObject(db.Model):
@@ -14,6 +41,7 @@ class BlockchainObject(db.Model):
     creation_timestamp = Column(Integer)
     data = Column('data', BYTEA)
     blockchain_index = Column(Integer, Sequence('blockchain_index_seq'))
+    chains = relationship('Chain')
 
     def __init__(self, object_id, creation_timestamp, data, blockchain_index=None):
         self.object_id = object_id
@@ -40,3 +68,4 @@ class BlockchainObject(db.Model):
         info['blockchain_index'] = self.blockchain_index
 
         return obj
+

@@ -12,12 +12,12 @@ valid_system_of_record_input_message_with_two_tags = {
 
         'tags': [
             {
-                'tag_name': 'version',
-                'tag_value': 'foo',
+                'chain_name': 'version',
+                'chain_value': 'foo',
             },
             {
-                'tag_name': 'sausage',
-                'tag_value': 'walls',
+                'chain_name': 'sausage',
+                'chain_value': 'walls',
             }
         ],
     }
@@ -44,10 +44,10 @@ invalid_message_without_schema_version = {
         'initial_request_timestamp': '123456',
         'reason_for_change': "str",
 
-        'tags': [
+        'chains': [
             {
-                'tag_name': 'version',
-                'tag_value': 'foo',
+                'chain_name': 'version',
+                'chain_value': 'foo',
             }
         ],
     }
@@ -67,10 +67,10 @@ invalid_message_with_extra_keys = {
         'initial_request_timestamp': '123456',
         'reason_for_change': "str",
 
-        'tags': [
+        'chains': [
             {
-                'tag_name': 'version',
-                'tag_value': 'foo',
+                'chain_name': 'version',
+                'chain_value': 'foo',
             }
         ],
     }

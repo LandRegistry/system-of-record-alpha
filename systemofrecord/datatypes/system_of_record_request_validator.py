@@ -11,10 +11,10 @@ schema = {
         Optional('initial_request_timestamp'): Coerce(long),
         Optional('reason_for_change'): str,
 
-        Optional('tags'): [
+        Optional('chains'): [
             {
-                Required('tag_name'): str,
-                Required('tag_value'): str,
+                Required('chain_name'): str,
+                Required('chain_value'): str,
             }
         ]
     }

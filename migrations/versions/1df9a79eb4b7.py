@@ -18,21 +18,18 @@ from alembic import op
 
 
 def upgrade():
-    op.execute(CreateSequence(Sequence('tag_id_seq')))
-
     op.create_table(
-        'tag',
-        Column('id', Integer(), Sequence('tag_id_seq'), primary_key=True),
+        'chain',
+        Column('id', Integer(), primary_key=True),
         Column('name', String(), nullable=False),
         Column('value', String(), nullable=False),
         Column('record_id', Integer(), ForeignKey('blockchain.id'), nullable=False),
         Column('record_seq', Integer(), nullable=False)
     )
 
-    op.create_unique_constraint('uq_tag_name_and_value', 'tag', ['name', 'value', 'record_id'])
+    op.create_unique_constraint('uq_chain_name_and_value', 'chain', ['name', 'value', 'record_id'])
 
 
 def downgrade():
-    op.dropTable('tag')
-    op.execute(DropSequence('tag_id_seq'))
-    op.drop_constraint('uq_tag_name_and_value')
+    op.dropTable('chain')
+    op.drop_constraint('uq_chain_name_and_value')

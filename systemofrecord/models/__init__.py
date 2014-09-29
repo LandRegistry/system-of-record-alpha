@@ -1,1 +1,1 @@
-from blockchainobject import BlockchainObject
+from domain_objects import Chain, BlockchainObject
