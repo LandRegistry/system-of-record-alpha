@@ -8,8 +8,7 @@ Create Date: 2014-09-11 11:56:38.611188
 
 
 # revision identifiers, used by Alembic.
-from sqlalchemy import Integer, String, Sequence, ForeignKey, Column
-from sqlalchemy.sql.ddl import CreateSequence, DropSequence
+from sqlalchemy import Integer, String, ForeignKey, Column
 
 revision = '1df9a79eb4b7'
 down_revision = '1ffade2444f3'
@@ -24,7 +23,6 @@ def upgrade():
         Column('name', String(), nullable=False),
         Column('value', String(), nullable=False),
         Column('record_id', Integer(), ForeignKey('blockchain.id'), nullable=False),
-        Column('record_seq', Integer(), nullable=False)
     )
 
     op.create_unique_constraint('uq_chain_name_and_value', 'chain', ['name', 'value', 'record_id'])

@@ -10,7 +10,7 @@ valid_system_of_record_input_message_with_two_tags = {
         'initial_request_timestamp': '123456',
         'reason_for_change': "str",
 
-        'tags': [
+        'chains': [
             {
                 'chain_name': 'version',
                 'chain_value': 'foo',
