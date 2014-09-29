@@ -31,6 +31,23 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
             loaded_object,
             valid_system_of_record_input_message_with_two_tags['object']['chains'])
 
+    def test_adding_new_object_with_same_id_can_load_most_recent_object(self):
+        blockchain_object_repository.store_object(
+            object_id=test_object_id,
+            data=valid_system_of_record_input_message_with_two_tags)
+
+        loaded_first_object = blockchain_object_repository.load_object(test_object_id)
+
+        blockchain_object_repository.store_object(
+            object_id=test_object_id,
+            data=valid_system_of_record_input_message_with_two_tags)
+
+        loaded_second_object = blockchain_object_repository.load_object(test_object_id)
+
+        self.assertNotEquals(loaded_first_object.blockchain_index, loaded_second_object.blockchain_index)
+        self.assertGreater(loaded_second_object.blockchain_index, loaded_first_object.blockchain_index)
+
+
 
     def test_cannot_store_title_with_title_id_not_matching_json_payload(self):
         self.assertRaises(InvalidTitleIdException, blockchain_object_repository.store_object, "foo",
