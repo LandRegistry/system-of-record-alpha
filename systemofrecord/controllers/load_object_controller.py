@@ -10,7 +10,7 @@ class LoadObjectController(object):
         loaded_object = blockchain_object_repository.load_object(object_id)
 
         if loaded_object:
-            return jsonify(loaded_object)
+            return jsonify(loaded_object.as_dict())
 
         app.logger.info("Could not find object with ID: %s" % object_id)
         return abort(404)

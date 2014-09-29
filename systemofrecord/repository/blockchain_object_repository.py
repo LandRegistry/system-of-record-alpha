@@ -24,10 +24,11 @@ class BlockchainObjectRepository(object):
         db.session.commit()
 
     def load_object(self, object_id):
-        title = BlockchainObject.query.filter_by(object_id=object_id).first()
+        object = BlockchainObject.query.filter_by(object_id=object_id).first()
 
-        if title:
-            return title.as_dict()
+        if object:
+            return object
+            #return object.as_dict()
 
         return None
 

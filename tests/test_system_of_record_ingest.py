@@ -22,8 +22,9 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
         loaded_object = blockchain_object_repository.load_object(test_object_id)
 
         # Check the loaded object looks like the one that we ingested
-        self.assertEquals(loaded_object['object']['data'], valid_message_without_tags['object']['data'])
-        self.assertEquals(loaded_object['object']['object_id'], valid_message_without_tags['object']['object_id'])
+        loaded_data = loaded_object.as_dict()
+        self.assertEquals(loaded_data['object']['data'], valid_message_without_tags['object']['data'])
+        self.assertEquals(loaded_data['object']['object_id'], valid_message_without_tags['object']['object_id'])
 
         # Ingest another message without tags
         blockchain_ingestor.ingest(valid_message_without_tags)
