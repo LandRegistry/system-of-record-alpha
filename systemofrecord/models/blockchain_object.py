@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, Sequence, String, ForeignKey
+from sqlalchemy import Column, Integer, Sequence, String
+from systemofrecord.models import Chain
 
 from systemofrecord.repository.message_id_validator import check_object_id_matches_id_in_message
 
@@ -8,28 +9,6 @@ from systemofrecord.services.json_conversion import from_json, to_json
 
 from systemofrecord.services.compression_service import decompress, compress
 from systemofrecord import db
-
-
-class Chain(db.Model):
-    __tablename__ = 'chain'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    value = Column(String)
-    record_id = Column(Integer, ForeignKey('blockchain.id'))
-
-    @staticmethod
-    def create(chain_name, chain_value):
-        return Chain(name=chain_name, value=chain_value)
-
-    def __repr__(self):
-        return "tag id: %d name: %s value: %s record_id: %d, record_seq: %d" % (
-            self.id,
-            self.name,
-            self.value,
-            self.record_id,
-            self.record_seq
-        )
 
 
 class BlockchainObject(db.Model):

@@ -22,7 +22,7 @@ def upgrade():
         Column('id', Integer(), primary_key=True),
         Column('name', String(), nullable=False),
         Column('value', String(), nullable=False),
-        Column('record_id', Integer(), ForeignKey('blockchain.id'), nullable=False),
+        Column('record_id', Integer(), ForeignKey('blockchain.id', ondelete='CASCADE'), nullable=False),
     )
 
     op.create_unique_constraint('uq_chain_name_and_value', 'chain', ['name', 'value', 'record_id'])
