@@ -31,7 +31,6 @@ class SystemOfRecordRequestValidator(DictionaryValidator):
             chain_names = {}
 
             for chain in chains:
-                print repr(chain_names)
                 chain_name = chain['chain_name']
                 if not chain_names.get(chain_name):
                     chain_names[chain_name] = 1

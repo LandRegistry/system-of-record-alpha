@@ -1,11 +1,10 @@
 from datatypes.exceptions import DataDoesNotMatchSchemaException
 
 from commitbuffer import blockchain_ingestor
-from systemofrecord.repository import blockchain_object_repository
-from systemofrecord.services import feeder_queue, tag_queue
+from systemofrecord.services import feeder_queue, chain_queue
 from system_of_record_message_fixtures import *
 from tests.teardown_unittest import TeardownUnittest
-
+from systemofrecord.repository import blockchain_object_repository
 
 test_object_id = valid_message_without_tags['object']['object_id']
 
@@ -40,8 +39,8 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
 
         # However, as the system was empty we're not expecting any tag messages, only the feeder queue message
         self.check_feeder_queue_and_database_contains_a_number_of_messages(1)
-        # TODO Check tags are in database....
-
+        loaded_data = blockchain_object_repository.load_object(test_object_id)
+        self.assertEqual(len(loaded_data.chains), len(valid_system_of_record_input_message_with_two_tags['object']['chains']))
         self.check_tag_queue_contains_a_number_of_messages(0)
 
         # Now we'll add a new message with the same 2 tags
@@ -50,17 +49,25 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
         # Now, we're expecting 2 items on the feeder queue & db
         self.check_feeder_queue_and_database_contains_a_number_of_messages(2)
         # And we're expecting 1 item on the tag queue
-        #self.check_tag_queue_contains_a_number_of_messages(1)
+        self.check_tag_queue_contains_a_number_of_messages(1)
 
     def test_cant_ingest_bad_record(self):
         self.check_system_is_empty()
 
         self.assertRaises(DataDoesNotMatchSchemaException, blockchain_ingestor.ingest,
                           invalid_message_with_extra_keys)
+
         self.assertRaises(DataDoesNotMatchSchemaException, blockchain_ingestor.ingest,
                           invalid_message_without_object)
+
         self.assertRaises(DataDoesNotMatchSchemaException, blockchain_ingestor.ingest,
                           invalid_message_without_schema_version)
+
+        self.assertRaises(DataDoesNotMatchSchemaException, blockchain_ingestor.ingest,
+                          invalid_message_with_duplicate_tag_value)
+
+        self.assertRaises(DataDoesNotMatchSchemaException, blockchain_ingestor.ingest,
+                          another_invalid_message_with_duplicate_tag_value)
 
         self.check_feeder_queue_and_database_contains_a_number_of_messages(0)
 
@@ -80,7 +87,7 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
         self.check_tag_queue_contains_a_number_of_messages(0)
 
     def check_tag_queue_contains_a_number_of_messages(self, number_of_messages):
-        self.assertEqual(tag_queue.queue_size(), number_of_messages)
+        self.assertEqual(chain_queue.queue_size(), number_of_messages)
 
     def check_feeder_queue_and_database_contains_a_number_of_messages(self, number_of_messages):
         self.assertEqual(blockchain_object_repository.count(), number_of_messages)
