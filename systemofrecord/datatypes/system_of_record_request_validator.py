@@ -1,4 +1,5 @@
 from datatypes.core import DictionaryValidator
+from datatypes.exceptions import DataDoesNotMatchSchemaException
 from voluptuous import Required, Optional, Coerce
 
 schema = {
@@ -22,6 +23,23 @@ schema = {
 
 
 class SystemOfRecordRequestValidator(DictionaryValidator):
+    def validate(self, dictionary):
+        super(SystemOfRecordRequestValidator, self).validate(dictionary)
+
+        try:
+            chains = dictionary['object']['chains']
+            chain_names = {}
+
+            for chain in chains:
+                print repr(chain_names)
+                chain_name = chain['chain_name']
+                if not chain_names.get(chain_name):
+                    chain_names[chain_name] = 1
+                else:
+                    raise DataDoesNotMatchSchemaException("Message contained duplicate chain name %s" % chain_name)
+        except KeyError:
+            pass
+
     def define_schema(self):
         return schema
 
@@ -37,3 +55,4 @@ class SystemOfRecordRequestValidator(DictionaryValidator):
             'object.object_id': 'object_id is required and must be a string',
             'object.data': 'data is required and must be a string'
         }
+

@@ -1,9 +1,11 @@
 from systemofrecord.repository import blockchain_object_repository
 from systemofrecord.repository.message_id_validator import InvalidTitleIdException
 from tests.system_of_record_message_fixtures import valid_message_without_tags, \
-    valid_system_of_record_input_message_with_two_tags
+    valid_system_of_record_input_message_with_two_tags, invalid_message_with_duplicate_tag_value, \
+    another_invalid_message_with_duplicate_tag_value
 
 from tests.teardown_unittest import TeardownUnittest
+from datatypes.exceptions import DataDoesNotMatchSchemaException
 
 test_object_id = valid_message_without_tags['object']['object_id']
 
@@ -47,7 +49,14 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
         self.assertNotEquals(loaded_first_object.blockchain_index, loaded_second_object.blockchain_index)
         self.assertGreater(loaded_second_object.blockchain_index, loaded_first_object.blockchain_index)
 
+    def test_cannot_store_object_with_the_same_tag_and_value_pair_twice(self):
+        self.assertRaises(DataDoesNotMatchSchemaException,
+                          blockchain_object_repository.store_object, test_object_id,
+                          invalid_message_with_duplicate_tag_value)
 
+        self.assertRaises(DataDoesNotMatchSchemaException,
+                          blockchain_object_repository.store_object, test_object_id,
+                          another_invalid_message_with_duplicate_tag_value)
 
     def test_cannot_store_title_with_title_id_not_matching_json_payload(self):
         self.assertRaises(InvalidTitleIdException, blockchain_object_repository.store_object, "foo",

@@ -53,6 +53,48 @@ invalid_message_without_schema_version = {
     }
 }
 
+invalid_message_with_duplicate_tag_value = {
+    'object': {
+        'object_id': 'AB12345',
+        'data': '<data>',
+        'created_by': 'The Mint',
+        'initial_request_timestamp': '123456',
+        'reason_for_change': "str",
+
+        'chains': [
+            {
+                'chain_name': 'version',
+                'chain_value': 'foo',
+            },
+            {
+                'chain_name': 'version',
+                'chain_value': 'foo',
+            }
+        ],
+    }
+}
+
+another_invalid_message_with_duplicate_tag_value = {
+    'object': {
+        'object_id': 'AB12345',
+        'data': '<data>',
+        'created_by': 'The Mint',
+        'initial_request_timestamp': '123456',
+        'reason_for_change': "str",
+
+        'chains': [
+            {
+                'chain_name': 'version',
+                'chain_value': 'foo',
+            },
+            {
+                'chain_name': 'version',
+                'chain_value': 'bar',
+            }
+        ],
+    }
+}
+
 invalid_message_with_extra_keys = {
     'object_info': {
         'foo': '1',

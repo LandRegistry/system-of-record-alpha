@@ -1,5 +1,6 @@
 from systemofrecord import db, configure_logging
 from systemofrecord.models import BlockchainObject
+from systemofrecord.datatypes import system_of_record_request_validator
 
 
 class BlockchainObjectRepository(object):
@@ -7,14 +8,15 @@ class BlockchainObjectRepository(object):
         self.logger = configure_logging(self)
 
     def store_object(self, object_id, data):
+        system_of_record_request_validator.validate(data)
         self.logger.info("Storing object %s" % object_id)
         db.session.add(BlockchainObject.create(object_id, data))
         db.session.commit()
 
     def load_object(self, object_id):
-        return BlockchainObject.query\
-            .filter_by(object_id=object_id)\
-            .order_by(BlockchainObject.blockchain_index.desc())\
+        return BlockchainObject.query \
+            .filter_by(object_id=object_id) \
+            .order_by(BlockchainObject.blockchain_index.desc()) \
             .first()
 
     def count(self):
