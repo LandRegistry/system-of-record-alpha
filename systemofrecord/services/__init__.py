@@ -9,6 +9,10 @@ from systemofrecord.services.ingest_queue_producer import IngestQueueProducer
 
 ingest_queue_producer = IngestQueueProducer()
 
+from systemofrecord.services.tag_queue_producer import TagQueueProducer
+
+tag_queue_producer = TagQueueProducer()
+
 
 
 

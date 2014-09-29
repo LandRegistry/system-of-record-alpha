@@ -1,4 +1,4 @@
-from tests.QueueUnittest import QueueUnittest
+from tests.queue_unittest import QueueUnittest
 
 from systemofrecord.services import ingest_queue_producer, ingest_queue
 from system_of_record_message_fixtures import valid_message_without_tags, invalid_message_without_object

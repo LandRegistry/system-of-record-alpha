@@ -8,7 +8,7 @@ from system_of_record_message_fixtures import *
 class SystemOfRecordRequestValidatorTestCase(TestCase):
     def test_can_validate_system_of_record_request(self):
         try:
-            system_of_record_request_validator.validate(valid_system_of_record_input_message)
+            system_of_record_request_validator.validate(valid_system_of_record_input_message_with_two_tags)
             system_of_record_request_validator.validate(valid_message_without_tags)
         except DataDoesNotMatchSchemaException as e:
             self.fail("Should not have thrown " + repr(e))

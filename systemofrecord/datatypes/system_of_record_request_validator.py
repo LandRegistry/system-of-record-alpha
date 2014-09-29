@@ -13,8 +13,8 @@ schema = {
 
         Optional('tags'): [
             {
-                Required('tag_type'): str,
-                Required('tag_id'): str,
+                Required('tag_name'): str,
+                Required('tag_value'): str,
             }
         ]
     }

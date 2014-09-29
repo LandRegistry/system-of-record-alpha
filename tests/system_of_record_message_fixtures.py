@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-valid_system_of_record_input_message = {
+valid_system_of_record_input_message_with_two_tags = {
     'schema_version': 1,
 
     'object': {
@@ -12,9 +12,12 @@ valid_system_of_record_input_message = {
 
         'tags': [
             {
-                'tag_type': 'version',
-                'tag_id': 'foo',
-                'tag_uri': "http://sysofrec/tags/foo",
+                'tag_name': 'version',
+                'tag_value': 'foo',
+            },
+            {
+                'tag_name': 'sausage',
+                'tag_value': 'walls',
             }
         ],
     }
@@ -43,9 +46,8 @@ invalid_message_without_schema_version = {
 
         'tags': [
             {
-                'tag_type': 'version',
-                'tag_id': 'foo',
-                'tag_uri': "http://sysofrec/tags/foo",
+                'tag_name': 'version',
+                'tag_value': 'foo',
             }
         ],
     }
@@ -67,9 +69,8 @@ invalid_message_with_extra_keys = {
 
         'tags': [
             {
-                'tag_type': 'version',
-                'tag_id': 'foo',
-                'tag_uri': "http://sysofrec/tags/foo",
+                'tag_name': 'version',
+                'tag_value': 'foo',
             }
         ],
     }

@@ -1,5 +1,6 @@
 from systemofrecord import configure_logging
 from systemofrecord.services import tag_queue
+from systemofrecord.datatypes import system_of_record_tag_message_validator as validator
 
 
 class TagQueueProducer(object):
