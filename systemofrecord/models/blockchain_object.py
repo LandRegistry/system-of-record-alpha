@@ -34,7 +34,7 @@ class BlockchainObject(db.Model):
 
         return BlockchainObject(
             object_id=object_id,
-            creation_timestamp=1,
+            creation_timestamp=1, ## TODO
             data=compress(to_json(message)),
             chains=link_chains()
         )
