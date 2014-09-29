@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, Sequence, String
+
 from systemofrecord.models import Chain
 
 from systemofrecord.repository.message_id_validator import check_object_id_matches_id_in_message
@@ -39,14 +40,7 @@ class BlockchainObject(db.Model):
         )
 
     def __repr__(self):
-        return "object id: %d title number: %s data: %s blockchain_index: %s creation_timestamp: %d chains: %s" % (
-            self.id,
-            self.object_id,
-            self.data,
-            self.blockchain_index,
-            self.creation_timestamp,
-            repr(self.chains)
-        )
+        return repr(self.as_dict())
 
     def as_dict(self):
         obj = from_json(decompress(self.data))
@@ -56,6 +50,7 @@ class BlockchainObject(db.Model):
         info['db_id'] = self.id
         info['creation_timestamp'] = self.creation_timestamp
         info['blockchain_index'] = self.blockchain_index
+        info['chains'] = map(lambda x: x.as_dict(), self.chains)
 
         return obj
 
