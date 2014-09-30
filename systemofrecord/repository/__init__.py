@@ -1,5 +1,7 @@
 from systemofrecord.repository.blockchain_object_repository import BlockchainObjectRepository
-from systemofrecord.repository.chain_repository import ChainRepository
 
 blockchain_object_repository = BlockchainObjectRepository()
-chain_repository = ChainRepository()
+
+from systemofrecord.repository.chain_repository import ChainRepository
+
+chain_repo = ChainRepository()

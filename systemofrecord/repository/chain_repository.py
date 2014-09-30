@@ -1,5 +1,7 @@
 from systemofrecord import configure_logging
 from systemofrecord.models import Chain
+from systemofrecord import db
+from systemofrecord.models.blockchain_object import BlockchainObject
 
 
 class ChainRepository(object):
@@ -8,17 +10,24 @@ class ChainRepository(object):
 
 
     def load_chain_heads_for_object(self, object):
-        chains = object['chains']
+        chains = object.chains
         result = {}
+        blockchain_object = None
 
         if chains:
             for chain in chains:
-                # TODO: Currenty ordering by record_id, need to order by blockchain_seq in parent
-                chain_name = chain['chain_name']
+                query = db.session.query(Chain, BlockchainObject) \
+                    .filter(Chain.name == chain.name, Chain.value == chain.value) \
+                    .filter(Chain.record_id == BlockchainObject.id) \
+                    .filter(BlockchainObject.blockchain_index < object.blockchain_index) \
+                    .order_by(BlockchainObject.blockchain_index.desc())
 
-                result[chain_name] = Chain.query \
-                    .filter_by(name=chain_name, value=chain['chain_value']) \
-                    .order_by(Chain.record_id.desc()) \
-                    .first()
+                query_result = query.first()
+
+                if query_result:
+                    (found_chain, blockchain_object) = query_result
+
+                if blockchain_object:
+                    result[found_chain.name] = blockchain_object
 
         return result

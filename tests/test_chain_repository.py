@@ -1,5 +1,7 @@
-from systemofrecord.repository import chain_repository, blockchain_object_repository
+from systemofrecord.repository import chain_repo as chain_repository, blockchain_object_repository
+from systemofrecord.services.compression_service import decompress
 from tests.teardown_unittest import TeardownUnittest
+
 
 class ChainRepositoryTestCase(TeardownUnittest):
     def test_can_load_historic_objects_given_chains(self):
@@ -22,13 +24,13 @@ class ChainRepositoryTestCase(TeardownUnittest):
                     {
                         'chain_name': 'history',
                         'chain_value': 'AB12345',
-                        },
+                    },
                     {
                         'chain_name': 'otherchain',
                         'chain_value': 'foo',
-                        }
+                    }
                 ],
-                }
+            }
         }
 
         data_for_b = {
@@ -45,13 +47,13 @@ class ChainRepositoryTestCase(TeardownUnittest):
                     {
                         'chain_name': 'history',
                         'chain_value': 'AB12345',
-                        },
+                    },
                     {
                         'chain_name': 'otherchain',
                         'chain_value': 'foo',
-                        }
+                    }
                 ],
-                }
+            }
         }
 
         data_for_c = {
@@ -68,18 +70,18 @@ class ChainRepositoryTestCase(TeardownUnittest):
                     {
                         'chain_name': 'history',
                         'chain_value': 'AB12345',
-                        },
+                    },
                     {
                         'chain_name': 'otherchain',
                         'chain_value': 'foo',
-                        }
+                    }
                 ],
-                }
+            }
         }
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_a)
-        object_a = blockchain_object_repository.load_most_recent_object_with_id(test_object_id).as_dict()
-        self.assertEqual('data-1', object_a['object']['data'])
+        object_a = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
+        self.assertTrue('data-1' in decompress(object_a.data))
 
         # Now we only have object A in the blockchain. It has sub-chains, but there should be
         # no historic items for these chains, so the chain heads should be empty
@@ -88,29 +90,27 @@ class ChainRepositoryTestCase(TeardownUnittest):
         self.assertEqual(chain_heads_for_a, {})
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_b)
-        object_b = blockchain_object_repository.load_most_recent_object_with_id(test_object_id).as_dict()
-        self.assertEqual('data-2', object_b['object'['data']])
+        object_b = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
+        self.assertTrue('data-2' in decompress(object_b.data))
 
         # Now, object a should be in our chain for both the chain tags on the test data
-        chain_heads_for_b = chain_repository.load_chain_heads_from_object(object_b)
+        chain_heads_for_b = chain_repository.load_chain_heads_for_object(object_b)
 
         # We're expecting to see 'history' : object_a, 'otherchain': object_a here
         self.check_chained_object_are_correct(chain_heads_for_b['history'], object_a)
         self.check_chained_object_are_correct(chain_heads_for_b['otherchain'], object_a)
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_c)
-        object_c = blockchain_object_repository.load_most_recent_object_with_id(test_object_id).as_dict()
-        self.assertEqual('data-3', object_c['object'['data']])
+        object_c = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
+        self.assertTrue('data-3' in decompress(object_c.data))
 
         # Now lets load the head of the chain for object C
         chain_heads_for_c = chain_repository.load_chain_heads_for_object(object_c)
         self.check_chained_object_are_correct(chain_heads_for_c['history'], object_b)
         self.check_chained_object_are_correct(chain_heads_for_c['otherchain'], object_b)
 
-        # We should have chains for a->b in our chains
-        self.assertEqual(len(chain_heads_for_c.iterkeys()), 2)
-
     def check_chained_object_are_correct(self, got, expected):
-        self.assertNotNone(got)
-        self.assertNotNone(expected)
-        self.assertEqual(got.object['object']['data'], expected['object']['data'])
+        self.assertIsNotNone(got)
+        self.assertIsNotNone(expected)
+
+        self.assertEqual(got.as_dict()['object']['data'], expected.as_dict()['object']['data'])
