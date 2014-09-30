@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 valid_system_of_record_input_message_with_two_tags = {
-    'schema_version': 1,
-
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',
@@ -24,8 +22,6 @@ valid_system_of_record_input_message_with_two_tags = {
 }
 
 valid_message_without_tags = {
-    'schema_version': 1,
-
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',
@@ -35,13 +31,11 @@ valid_message_without_tags = {
     }
 }
 
-invalid_message_without_schema_version = {
+invalid_message_without_data = {
 
     'object': {
         'object_id': 'AB12345',
-        'data': '<data>',
         'created_by': 'The Mint',
-        'initial_request_timestamp': '123456',
         'reason_for_change': "str",
 
         'chains': [
@@ -95,31 +89,8 @@ another_invalid_message_with_duplicate_tag_value = {
     }
 }
 
-invalid_message_with_extra_keys = {
-    'object_info': {
-        'foo': '1',
-    },
-
-    'schema-version': '1',
-
-    'object': {
-        'object_id': 'AB12345',
-        'data': '<data>',
-        'created_by': 'The Mint',
-        'initial_request_timestamp': '123456',
-        'reason_for_change': "str",
-
-        'chains': [
-            {
-                'chain_name': 'version',
-                'chain_value': 'foo',
-            }
-        ],
-    }
-}
-
 invalid_message_without_object = {
-    'object_info': {
+    'foo': {
         'created_by': 'The Mint',
         'initial_request_timestamp': '123456',
         'reason_for_change': "str",

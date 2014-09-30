@@ -1,3 +1,5 @@
 from systemofrecord.datatypes.system_of_record_request_validator import SystemOfRecordRequestValidator
+from systemofrecord.datatypes.system_of_record_chain_message_validator import SystemOfRecordChainMessageValidator
 
 system_of_record_request_validator = SystemOfRecordRequestValidator()
+system_of_record_chain_message_validator = SystemOfRecordChainMessageValidator()

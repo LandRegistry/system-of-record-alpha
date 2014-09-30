@@ -3,10 +3,7 @@ from datatypes.exceptions import DataDoesNotMatchSchemaException
 from voluptuous import Required, Optional, Coerce
 
 
-schema_version = '1'
-
 schema = {
-    Required('schema_version'): int,
 
     Required('object'): {
         Required('object_id'): str,
@@ -38,7 +35,7 @@ class SystemOfRecordRequestValidator(DictionaryValidator):
                 if not chain_names.get(chain_name):
                     chain_names[chain_name] = 1
                 else:
-                    raise DataDoesNotMatchSchemaException("Message contained duplicate chain name %s" % chain_name)
+                    raise DataDoesNotMatchSchemaException(message="Message contained duplicate chain name %s" % chain_name)
         except KeyError:
             pass
 

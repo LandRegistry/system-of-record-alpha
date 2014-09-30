@@ -1,6 +1,6 @@
 from systemofrecord import configure_logging
 
-from systemofrecord.repository import blockchain_object_repository
+from systemofrecord.repository import blockchain_object_repository, chain_repo
 from systemofrecord.datatypes import system_of_record_request_validator
 from systemofrecord.services import feeder_queue, chain_queue_producer
 
@@ -10,27 +10,42 @@ class SystemOfRecordIngestor(object):
         self.logger = configure_logging(self)
 
     def ingest(self, message):
-        self.logger.info("Attempting to append to blockchain: %s" % str(message))
+        self.logger.debug("Beginning blockchain append for: [%s]" % str(message))
 
-        try:
-            if message is not None:
-                system_of_record_request_validator.validate(message)
-                object_id = message['object']['object_id']
-                blockchain_object_repository.store_object(object_id, message)
-                loaded_object_from_head_of_blockchain = blockchain_object_repository.load_most_recent_object_with_id(object_id)
+        if message is not None:
+            system_of_record_request_validator.validate(message)
+            object_id = message['object']['object_id']
+            self.logger.debug("Beginning blockchain append for: [%s]" % object_id)
 
-                if loaded_object_from_head_of_blockchain:
-                    feeder_queue.add_to_queue(loaded_object_from_head_of_blockchain.as_dict())
-
-                    if len(loaded_object_from_head_of_blockchain.chains) > 0:
-                        chain_queue_producer.enqueue_for_object(loaded_object_from_head_of_blockchain.as_dict())
-
-                    self.logger.info("Appended object %s to blockchain" % object_id)
-                else:
-                    self.logger.error(
-                        "Could not load object with object_id %s, not enqueueing message %s" % (object_id, message))
+            loaded_object_from_head_of_blockchain = self.store_in_database(object_id, message)
+            if loaded_object_from_head_of_blockchain:
+                self.send_to_feeder(loaded_object_from_head_of_blockchain)
+                self.send_chain_messages(loaded_object_from_head_of_blockchain, object_id)
             else:
-                self.logger.warn("Attempted to ingest null message")
-        except Exception as e:
-            self.logger.error("Exception caught attempting to append item %s to blockchain" % message, e)
-            raise e
+                self.logger.error(
+                    "Could not find object with ID [%s] so can't send message [%s]" % (object_id, repr(message)))
+
+            self.logger.info("Finished blockchain append for object [%s]" % object_id)
+        else:
+            self.logger.warn("Attempted to ingest null message")
+
+
+    def store_in_database(self, object_id, message):
+        blockchain_object_repository.store_object(object_id, message)
+        return blockchain_object_repository.load_most_recent_object_with_id(object_id)
+
+
+    def send_to_feeder(self, blockchain_object):
+        if blockchain_object:
+            feeder_queue.add_to_queue(blockchain_object.as_dict())
+
+    def send_chain_messages(self, blockchain_object, object_id):
+        if len(blockchain_object.chains) > 0:
+            chains_to_send = chain_repo.load_chain_heads_for_object(blockchain_object)
+
+            print "Chains to send " + repr(chains_to_send)
+
+            if chains_to_send:
+                chain_names = ', '.join(k for k in chains_to_send.iterkeys())
+                self.logger.info("Sending message for chains [%s] from object [%s]" % (chain_names, object_id))
+                chain_queue_producer.enqueue_for_object(blockchain_object, chains_to_send)

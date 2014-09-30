@@ -109,6 +109,7 @@ class ChainRepositoryTestCase(TeardownUnittest):
         self.check_chained_object_are_correct(chain_heads_for_c['history'], object_b)
         self.check_chained_object_are_correct(chain_heads_for_c['otherchain'], object_b)
 
+
     def check_chained_object_are_correct(self, got, expected):
         self.assertIsNotNone(got)
         self.assertIsNotNone(expected)
