@@ -7,12 +7,10 @@ from systemofrecord.datatypes import system_of_record_request_validator
 schema = {
     Required('message-envelope'): {
         Required('caused-by-blockchain-insert-id'): int,
-        Required('messages'): [
-            {
-                Required('tag-name'): str,
-                Required('message'): system_of_record_request_validator.schema
-            }
-        ]
+        Required('messages'): {
+            Required('chain-name'): str,
+            Required('messages'): [system_of_record_request_validator.schema]
+        }
     }
 }
 

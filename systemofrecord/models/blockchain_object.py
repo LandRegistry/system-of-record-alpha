@@ -50,7 +50,8 @@ class BlockchainObject(db.Model):
         info['db_id'] = self.id
         info['creation_timestamp'] = self.creation_timestamp
         info['blockchain_index'] = self.blockchain_index
-        info['chains'] = map(lambda x: x.as_dict(), self.chains)
+
+        obj['chains'] = map(lambda x: x.as_dict(), self.chains)
 
         return obj
 

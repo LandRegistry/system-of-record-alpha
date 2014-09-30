@@ -2,6 +2,9 @@ from datatypes.core import DictionaryValidator
 from datatypes.exceptions import DataDoesNotMatchSchemaException
 from voluptuous import Required, Optional, Coerce
 
+
+schema_version = '1'
+
 schema = {
     Required('schema_version'): int,
 

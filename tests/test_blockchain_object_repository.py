@@ -1,8 +1,7 @@
 from systemofrecord.repository import blockchain_object_repository
 from systemofrecord.repository.message_id_validator import InvalidTitleIdException
-from tests.system_of_record_message_fixtures import valid_message_without_tags, \
-    valid_system_of_record_input_message_with_two_tags, invalid_message_with_duplicate_tag_value, \
-    another_invalid_message_with_duplicate_tag_value
+from tests.system_of_record_message_fixtures import *
+from systemofrecord.datatypes import system_of_record_request_validator
 
 from tests.teardown_unittest import TeardownUnittest
 from datatypes.exceptions import DataDoesNotMatchSchemaException
@@ -16,7 +15,7 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
             object_id=test_object_id,
             data=valid_message_without_tags)
 
-        loaded_object = blockchain_object_repository.load_object(test_object_id)
+        loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
         self.check_loaded_object(loaded_object.as_dict())
 
@@ -25,7 +24,7 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
             object_id=test_object_id,
             data=valid_system_of_record_input_message_with_two_tags)
 
-        loaded_object = blockchain_object_repository.load_object(test_object_id)
+        loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
         self.check_loaded_object(loaded_object.as_dict())
 
@@ -38,13 +37,13 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
             object_id=test_object_id,
             data=valid_system_of_record_input_message_with_two_tags)
 
-        loaded_first_object = blockchain_object_repository.load_object(test_object_id)
+        loaded_first_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
         blockchain_object_repository.store_object(
             object_id=test_object_id,
             data=valid_system_of_record_input_message_with_two_tags)
 
-        loaded_second_object = blockchain_object_repository.load_object(test_object_id)
+        loaded_second_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
         self.assertNotEquals(loaded_first_object.blockchain_index, loaded_second_object.blockchain_index)
         self.assertGreater(loaded_second_object.blockchain_index, loaded_first_object.blockchain_index)
@@ -62,6 +61,7 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
         self.assertRaises(InvalidTitleIdException, blockchain_object_repository.store_object, "foo",
                           valid_message_without_tags)
 
+
     def check_chains_are_equal(self, loaded_data, expected_chains):
         self.assertEqual(len(loaded_data.chains), len(expected_chains))
 
@@ -78,8 +78,6 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
 
     def check_loaded_object(self, loaded_data):
         self.assertIsNotNone(loaded_data)
-        loaded_object_info = loaded_data['object']
-        self.assertIsInstance(loaded_object_info['db_id'], int)
-        self.assertIsInstance(loaded_object_info['creation_timestamp'], int)
-        self.assertIsInstance(loaded_object_info['blockchain_index'], int)
+
+        system_of_record_request_validator.validate(loaded_data)
         self.assertEquals(loaded_data['object']['object_id'], test_object_id)

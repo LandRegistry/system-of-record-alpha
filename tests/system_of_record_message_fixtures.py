@@ -12,8 +12,8 @@ valid_system_of_record_input_message_with_two_tags = {
 
         'chains': [
             {
-                'chain_name': 'version',
-                'chain_value': 'foo',
+                'chain_name': 'history',
+                'chain_value': 'AB12345',
             },
             {
                 'chain_name': 'sausage',

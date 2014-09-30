@@ -13,7 +13,7 @@ class BlockchainObjectRepository(object):
         db.session.add(BlockchainObject.create(object_id, data))
         db.session.commit()
 
-    def load_object(self, object_id):
+    def load_most_recent_object_with_id(self, object_id):
         return BlockchainObject.query \
             .filter_by(object_id=object_id) \
             .order_by(BlockchainObject.blockchain_index.desc()) \

@@ -17,13 +17,13 @@ class SystemOfRecordIngestor(object):
                 system_of_record_request_validator.validate(message)
                 object_id = message['object']['object_id']
                 blockchain_object_repository.store_object(object_id, message)
-                loaded_object = blockchain_object_repository.load_object(object_id)
+                loaded_object_from_head_of_blockchain = blockchain_object_repository.load_most_recent_object_with_id(object_id)
 
-                if loaded_object:
-                    feeder_queue.add_to_queue(message)
+                if loaded_object_from_head_of_blockchain:
+                    feeder_queue.add_to_queue(loaded_object_from_head_of_blockchain.as_dict())
 
-                    if len(loaded_object.chains) > 0:
-                        chain_queue_producer.enqueue_for_object(loaded_object)
+                    if len(loaded_object_from_head_of_blockchain.chains) > 0:
+                        chain_queue_producer.enqueue_for_object(loaded_object_from_head_of_blockchain.as_dict())
 
                     self.logger.info("Appended object %s to blockchain" % object_id)
                 else:
@@ -32,6 +32,5 @@ class SystemOfRecordIngestor(object):
             else:
                 self.logger.warn("Attempted to ingest null message")
         except Exception as e:
-            self.logger.error("Exception caught attempting to append item %s %s to blockchain" % (object_id, message),
-                              e)
+            self.logger.error("Exception caught attempting to append item %s to blockchain" % message, e)
             raise e
