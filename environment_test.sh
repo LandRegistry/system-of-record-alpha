@@ -1,4 +1,5 @@
 # Here we'll create a test database, and override the database to the test values.
+set +x
 set +o errexit
 createuser -s sysofrec_test
 createdb -U sysofrec_test -O sysofrec_test sysofrec_test -T template0
