@@ -10,6 +10,7 @@ env:
 script:
 - source ./environment.sh
 - source ./environment_test.sh
+- python manage.py db upgrade
 - py.test --cov systemofrecord tests/ --cov-report=term --cov-report=html
 after_success:
   - coveralls
