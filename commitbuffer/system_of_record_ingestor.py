@@ -1,7 +1,7 @@
 from systemofrecord import configure_logging
 
 from systemofrecord.repository import blockchain_object_repository, chain_repo
-from systemofrecord.datatypes import system_of_record_request_validator
+from datatypes import system_of_record_request_validator
 from systemofrecord.services import feeder_queue, chain_queue_producer
 
 

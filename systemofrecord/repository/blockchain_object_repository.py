@@ -1,6 +1,6 @@
 from systemofrecord import db, configure_logging
 from systemofrecord.models import BlockchainObject
-from systemofrecord.datatypes import system_of_record_request_validator
+from datatypes import system_of_record_request_validator
 
 
 class BlockchainObjectRepository(object):

@@ -1,7 +1,7 @@
 from flask import make_response
 
 from systemofrecord.services import ingest_queue_producer
-from systemofrecord.datatypes import system_of_record_request_validator
+from datatypes import system_of_record_request_validator
 from systemofrecord import configure_logging
 
 

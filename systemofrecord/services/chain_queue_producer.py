@@ -1,6 +1,6 @@
 from systemofrecord import configure_logging
 from systemofrecord.services import chain_queue
-from systemofrecord.datatypes import system_of_record_chain_message_validator
+from datatypes import system_of_record_chain_message_validator
 
 
 class ChainQueueProducer(object):
@@ -25,7 +25,7 @@ class ChainQueueProducer(object):
         message_content = []
         for chain_name in chains.iterkeys():
             chain_message = chains[chain_name].as_dict()
-            del chain_message['chains']
+            del chain_message['chains']  # TODO: The repository probably shouldn't return this
 
             message_content.append({
                 'chain_name': str(chain_name),

@@ -1,7 +1,7 @@
 from systemofrecord.repository import blockchain_object_repository
 from systemofrecord.repository.message_id_validator import InvalidTitleIdException
 from tests.system_of_record_message_fixtures import *
-from systemofrecord.datatypes import system_of_record_request_validator
+from datatypes import system_of_record_request_validator
 
 from tests.teardown_unittest import TeardownUnittest
 from datatypes.exceptions import DataDoesNotMatchSchemaException
