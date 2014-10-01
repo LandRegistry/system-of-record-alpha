@@ -43,8 +43,6 @@ class SystemOfRecordIngestor(object):
         if len(blockchain_object.chains) > 0:
             chains_to_send = chain_repo.load_chain_heads_for_object(blockchain_object)
 
-            print "Chains to send " + repr(chains_to_send)
-
             if chains_to_send:
                 chain_names = ', '.join(k for k in chains_to_send.iterkeys())
                 self.logger.info("Sending message for chains [%s] from object [%s]" % (chain_names, object_id))
