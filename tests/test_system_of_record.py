@@ -1,40 +1,34 @@
-import unittest
-import json
 import mock
 
-from systemofrecord import server
+from tests.teardown_unittest import TeardownUnittest
+from system_of_record_message_fixtures import valid_message_without_tags
+import json
 
-from data import data_from_mint
-from data import title_number
 
-data_for_the_feeder = data_from_mint['title']
+test_object_id = valid_message_without_tags['object']['object_id']
 
-class SystemOfRecordTestCase(unittest.TestCase):
 
-    def setUp(self):
-        self.app = server.app.test_client()
+class SystemOfRecordTestCase(TeardownUnittest):
+    @mock.patch("systemofrecord.services.IngestQueueProducer.enqueue")
+    def test_add_title_should_put_to_db_and_queue_data(self, mock_enqueue):
+        self.app.put("/titles/%s" % test_object_id,
+                     data=(json.dumps(valid_message_without_tags)),
+                     content_type="application/json")
 
-    @mock.patch("systemofrecord.feeder.FeederQueue.enqueue")
-    @mock.patch("systemofrecord.storage.DBStore.put")
-    def test_add_title_should_put_to_db_and_queue_data(self, mock_put, mock_enqueue):
-        self.app.put("/titles/%s" % title_number, data = json.dumps(data_from_mint), content_type="application/json")
-        mock_put.assert_called_with(title_number, data_from_mint)
-        mock_enqueue.assert_called_with(title_number, data_for_the_feeder)
+        mock_enqueue.assert_called_with(valid_message_without_tags)
 
-    @mock.patch("systemofrecord.storage.DBStore.count")
     @mock.patch("redis.Redis.info")
-    def test_health_returns_200(self, mock_redis, mock_db):
+    def test_health_returns_200(self, mock_redis):
         response = self.app.get('/health')
-        assert response.status == '200 OK'
+        self.assertEqual(response.status, '200 OK')
 
-    @mock.patch("systemofrecord.storage.DBStore.get")
-    def test_get_known_title_gets_from_db(self, mock_db_get):
-        self.app.get("/titles/%s" % title_number)
-        mock_db_get.assert_called_with(title_number)
+    def test_get_known_title_gets_from_db(self):
+        self.app.put("/titles/%s" % test_object_id,
+                     data=json.dumps(valid_message_without_tags),
+                     content_type="application/json")
 
+        self.app.get("/titles/%s" % test_object_id)
 
-    @mock.patch("systemofrecord.storage.DBStore.get", return_value=None)
-    def test_get_returns_404_if_title_not_found(self, mock_db_get):
-        response = self.app.get("/titles/%s" % title_number)
-        mock_db_get.assert_called_with(title_number)
-        assert response.status_code == 404
+    def test_get_returns_404_if_title_not_found(self):
+        response = self.app.get("/titles/%s" % test_object_id)
+        self.assertEqual(response.status_code, 404)

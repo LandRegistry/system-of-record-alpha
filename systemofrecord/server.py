@@ -1,36 +1,15 @@
-from flask import jsonify,  abort, request, make_response
-
 from systemofrecord import app
-
-from .storage import DBStore
-from .feeder import FeederQueue
-from .health import Health
-
-storage = DBStore()
-feeder = FeederQueue(app)
-Health(app, checks=[storage.health, feeder.health])
+from systemofrecord.controllers import load_title_controller, store_title_controller
+from flask import request
+import json
 
 
-@app.route('/titles/<title_number>', methods=['GET', 'PUT'])
-def title(title_number):
+@app.route('/titles/<object_id>', methods=['GET'])
+def get_object(object_id):
+    return load_title_controller.load_object(object_id)
 
-    app.logger.debug("Title number %s, data %s" %(title_number, request.json))
 
-    if request.method == 'GET':
-        title = storage.get(title_number)
-        if title:
-            return jsonify(title)
-        else:
-            app.logger.info("Could not find title number %s" % title_number)
-            return abort(404)
-    else:
-        storage.put(title_number, request.json)
-        app.logger.info("Put title json %s on feeder queue" % request.json['title'])
-        feeder.enqueue(title_number, request.json['title'])
-        app.logger.debug("Title number %s, data %s" %(title_number, request.json))
-        return make_response('OK', 201)
-
-@app.route('/titles')
-def titles():
-    titles = storage.list_titles()
-    return jsonify(titles=titles)
+@app.route('/titles/<object_id>', methods=['PUT'])
+def store_object(object_id):
+    app.logger.info("Requested to store object_id: %s" % object_id)
+    return store_title_controller.store_object(object_id, json.loads(request.data))
