@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-valid_system_of_record_input_message_with_two_tags = {
+from datatypes.core import unicoded
+
+valid_system_of_record_input_message_with_two_tags = unicoded({
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',
@@ -19,9 +21,9 @@ valid_system_of_record_input_message_with_two_tags = {
             }
         ],
     }
-}
+})
 
-valid_message_without_tags = {
+valid_message_without_tags = unicoded({
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',
@@ -29,9 +31,9 @@ valid_message_without_tags = {
         'initial_request_timestamp': '123456',
         'reason_for_change': "str",
     }
-}
+})
 
-invalid_message_without_data = {
+invalid_message_without_data = unicoded({
 
     'object': {
         'object_id': 'AB12345',
@@ -45,9 +47,9 @@ invalid_message_without_data = {
             }
         ],
     }
-}
+})
 
-invalid_message_with_duplicate_tag_value = {
+invalid_message_with_duplicate_tag_value = unicoded({
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',
@@ -66,9 +68,9 @@ invalid_message_with_duplicate_tag_value = {
             }
         ],
     }
-}
+})
 
-another_invalid_message_with_duplicate_tag_value = {
+another_invalid_message_with_duplicate_tag_value = unicoded({
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',
@@ -87,13 +89,13 @@ another_invalid_message_with_duplicate_tag_value = {
             }
         ],
     }
-}
+})
 
-invalid_message_without_object = {
+invalid_message_without_object = unicoded({
     'foo': {
         'created_by': 'The Mint',
         'initial_request_timestamp': '123456',
         'reason_for_change': "str",
         'schema_version': 1
     },
-}
+})

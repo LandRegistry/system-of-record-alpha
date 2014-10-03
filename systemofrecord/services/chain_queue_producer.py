@@ -1,6 +1,7 @@
 from systemofrecord import configure_logging
 from systemofrecord.services import chain_queue
 from datatypes import system_of_record_chain_message_validator
+from datatypes.core import unicoded
 
 
 class ChainQueueProducer(object):
@@ -14,12 +15,12 @@ class ChainQueueProducer(object):
         self.logger.debug("Chain message sent: " + repr(message_to_send))
 
     def create_chain_message(self, originating_object, chains):
-        return {
+        return unicoded({
             'message_envelope': {
                 'caused_by_blockchain_insert_id': int(originating_object.as_dict()['object']['blockchain_index']),
                 'messages': self.chain_message_content(chains)
             }
-        }
+        })
 
     def chain_message_content(self, chains):
         message_content = []

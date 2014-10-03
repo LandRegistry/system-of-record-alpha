@@ -2,7 +2,7 @@ from systemofrecord.repository import blockchain_object_repository
 from systemofrecord.repository.message_id_validator import InvalidTitleIdException
 from tests.system_of_record_message_fixtures import *
 from datatypes import system_of_record_request_validator
-
+from datatypes.core import unicoded
 from tests.teardown_unittest import TeardownUnittest
 from datatypes.exceptions import DataDoesNotMatchSchemaException
 
@@ -17,7 +17,7 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
 
         loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
-        self.check_loaded_object(loaded_object.as_dict())
+        self.check_loaded_object(unicoded(loaded_object.as_dict()))
 
     def test_can_store_object_with_chains(self):
         blockchain_object_repository.store_object(
@@ -26,7 +26,7 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
 
         loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
-        self.check_loaded_object(loaded_object.as_dict())
+        self.check_loaded_object(unicoded(loaded_object.as_dict()))
 
         self.check_chains_are_equal(
             loaded_object,

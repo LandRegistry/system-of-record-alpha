@@ -1,6 +1,7 @@
 from systemofrecord.repository import chain_repo as chain_repository, blockchain_object_repository
 from systemofrecord.services.compression_service import decompress
 from tests.teardown_unittest import TeardownUnittest
+from datatypes.core import unicoded
 
 
 class ChainRepositoryTestCase(TeardownUnittest):
@@ -10,7 +11,7 @@ class ChainRepositoryTestCase(TeardownUnittest):
         # We'll then load the last object chained to c, which should be b
         test_object_id = 'AB12345'
 
-        data_for_a = {
+        data_for_a = unicoded({
             'schema_version': 1,
 
             'object': {
@@ -31,9 +32,9 @@ class ChainRepositoryTestCase(TeardownUnittest):
                     }
                 ],
             }
-        }
+        })
 
-        data_for_b = {
+        data_for_b = unicoded({
             'schema_version': 1,
 
             'object': {
@@ -54,9 +55,9 @@ class ChainRepositoryTestCase(TeardownUnittest):
                     }
                 ],
             }
-        }
+        })
 
-        data_for_c = {
+        data_for_c = unicoded({
             'schema_version': 1,
 
             'object': {
@@ -77,7 +78,7 @@ class ChainRepositoryTestCase(TeardownUnittest):
                     }
                 ],
             }
-        }
+        })
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_a)
         object_a = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)

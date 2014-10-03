@@ -1,8 +1,8 @@
 import mock
 
-from systemofrecord.services.json_conversion import to_json
 from tests.teardown_unittest import TeardownUnittest
 from system_of_record_message_fixtures import valid_message_without_tags
+import json
 
 
 test_object_id = valid_message_without_tags['object']['object_id']
@@ -12,7 +12,7 @@ class SystemOfRecordTestCase(TeardownUnittest):
     @mock.patch("systemofrecord.services.IngestQueueProducer.enqueue")
     def test_add_title_should_put_to_db_and_queue_data(self, mock_enqueue):
         self.app.put("/titles/%s" % test_object_id,
-                     data=(to_json(valid_message_without_tags)),
+                     data=(json.dumps(valid_message_without_tags)),
                      content_type="application/json")
 
         mock_enqueue.assert_called_with(valid_message_without_tags)
@@ -24,7 +24,7 @@ class SystemOfRecordTestCase(TeardownUnittest):
 
     def test_get_known_title_gets_from_db(self):
         self.app.put("/titles/%s" % test_object_id,
-                     data=to_json(valid_message_without_tags),
+                     data=json.dumps(valid_message_without_tags),
                      content_type="application/json")
 
         self.app.get("/titles/%s" % test_object_id)

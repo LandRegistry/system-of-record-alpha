@@ -4,9 +4,11 @@ from sqlalchemy import Column, Integer, Sequence, String
 
 from systemofrecord.models import Chain
 from systemofrecord.repository.message_id_validator import check_object_id_matches_id_in_message
-from systemofrecord.services.json_conversion import from_json, to_json
+
 from systemofrecord.services.compression_service import decompress, compress
 from systemofrecord import db
+
+import json
 
 
 class BlockchainObject(db.Model):
@@ -32,7 +34,7 @@ class BlockchainObject(db.Model):
         return BlockchainObject(
             object_id=object_id,
             creation_timestamp=1,  ## TODO
-            data=compress(to_json(message)),
+            data=compress(json.dumps(message)),
             chains=link_chains()
         )
 
@@ -43,7 +45,7 @@ class BlockchainObject(db.Model):
         return len(self.chains) > 0
 
     def as_dict(self):
-        obj = from_json(decompress(self.data))
+        obj = json.loads(decompress(self.data))
         info = obj['object']
         assert info
 
