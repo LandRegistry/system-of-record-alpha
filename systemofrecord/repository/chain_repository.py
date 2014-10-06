@@ -19,7 +19,6 @@ class ChainRepository(object):
                 query = db.session.query(Chain, BlockchainObject) \
                     .filter(Chain.name == chain.name, Chain.value == chain.value) \
                     .filter(Chain.record_id == BlockchainObject.id) \
-                    .filter(BlockchainObject.blockchain_index < object.blockchain_index) \
                     .order_by(BlockchainObject.blockchain_index.desc())
 
                 query_result = query.first()

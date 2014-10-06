@@ -85,10 +85,12 @@ class ChainRepositoryTestCase(TeardownUnittest):
         self.assertTrue('data-1' in decompress(object_a.data))
 
         # Now we only have object A in the blockchain. It has sub-chains, but there should be
-        # no historic items for these chains, so the chain heads should be empty
+        # no historic items for these chains.
+        # This means that we should load this object from the repostiory for the chain heads.
         chain_heads_for_a = chain_repository.load_chain_heads_for_object(object_a)
 
-        self.assertEqual(chain_heads_for_a, {})
+        self.check_chained_object_are_correct(chain_heads_for_a['history'], object_a)
+        self.check_chained_object_are_correct(chain_heads_for_a['otherchain'], object_a)
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_b)
         object_b = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
@@ -98,8 +100,8 @@ class ChainRepositoryTestCase(TeardownUnittest):
         chain_heads_for_b = chain_repository.load_chain_heads_for_object(object_b)
 
         # We're expecting to see 'history' : object_a, 'otherchain': object_a here
-        self.check_chained_object_are_correct(chain_heads_for_b['history'], object_a)
-        self.check_chained_object_are_correct(chain_heads_for_b['otherchain'], object_a)
+        self.check_chained_object_are_correct(chain_heads_for_b['history'], object_b)
+        self.check_chained_object_are_correct(chain_heads_for_b['otherchain'], object_b)
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_c)
         object_c = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
@@ -107,8 +109,8 @@ class ChainRepositoryTestCase(TeardownUnittest):
 
         # Now lets load the head of the chain for object C
         chain_heads_for_c = chain_repository.load_chain_heads_for_object(object_c)
-        self.check_chained_object_are_correct(chain_heads_for_c['history'], object_b)
-        self.check_chained_object_are_correct(chain_heads_for_c['otherchain'], object_b)
+        self.check_chained_object_are_correct(chain_heads_for_c['history'], object_c)
+        self.check_chained_object_are_correct(chain_heads_for_c['otherchain'], object_c)
 
 
     def check_chained_object_are_correct(self, got, expected):
