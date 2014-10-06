@@ -26,6 +26,7 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
         self.check_chain_queue_contains_a_number_of_messages(2)
         loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
+
         # Check the loaded object looks like the one that we ingested
         loaded_data = loaded_object.as_dict()
         self.assertEquals(loaded_data['object']['data'],
