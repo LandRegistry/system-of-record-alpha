@@ -16,5 +16,7 @@ class IngestQueueConsumerTestCase(QueueUnittest):
         # Check the queue has something on it
         self.assertEqual(ingest_queue.queue_size(), 2)
 
-
         ingest_queue_consumer.process_queue()
+
+        # Check we can process the queue
+        self.assertEqual(ingest_queue.queue_size(), 0)

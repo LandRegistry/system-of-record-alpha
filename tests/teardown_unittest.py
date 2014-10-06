@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from systemofrecord import server
-from systemofrecord.services import ingest_queue, feeder_queue, chain_queue
+from systemofrecord.services import ingest_queue, chain_queue
 from systemofrecord.models import BlockchainObject, Chain
 
 
@@ -9,9 +9,6 @@ class TeardownUnittest(TestCase):
     def consume_queues(self):
         while not ingest_queue.is_empty():
             ingest_queue.read_from_queue()
-
-        while not feeder_queue.is_empty():
-            feeder_queue.read_from_queue()
 
         while not chain_queue.is_empty():
             chain_queue.read_from_queue()

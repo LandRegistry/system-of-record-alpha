@@ -23,6 +23,7 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
 
         # However, as the system was empty we're not expecting any tag messages, only the feeder queue message
         self.check_system_contains_a_number_of_messages(1)
+        self.check_chain_queue_contains_a_number_of_messages(2)
         loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
         # Check the loaded object looks like the one that we ingested
@@ -41,6 +42,7 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
 
         # Now, we're expecting 2 items on the chain queue & db
         self.check_system_contains_a_number_of_messages(2)
+        self.check_chain_queue_contains_a_number_of_messages(4)
 
     def test_cant_ingest_bad_record(self):
         self.check_system_is_empty()
@@ -69,7 +71,10 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
 
     def check_system_is_empty(self):
         self.check_system_contains_a_number_of_messages(0)
+        self.check_chain_queue_contains_a_number_of_messages(0)
+
+    def check_chain_queue_contains_a_number_of_messages(self, number_of_messages):
+        self.assertEqual(chain_queue.queue_size(), number_of_messages)
 
     def check_system_contains_a_number_of_messages(self, number_of_messages):
         self.assertEqual(blockchain_object_repository.count(), number_of_messages)
-        self.assertEqual(chain_queue.queue_size(), number_of_messages)

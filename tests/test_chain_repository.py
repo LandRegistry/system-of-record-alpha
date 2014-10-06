@@ -8,7 +8,7 @@ class ChainRepositoryTestCase(TeardownUnittest):
     def test_can_load_historic_objects_given_chains(self):
         # Here we'll create three items in the global blockchain linked by a sub chain,
         # a->b->c
-        # We'll then load the last object chained to c, which should be b
+        # We'll then load the last objects chained to c, which should be b,c
         test_object_id = 'AB12345'
 
         data_for_a = unicoded({
@@ -80,17 +80,24 @@ class ChainRepositoryTestCase(TeardownUnittest):
             }
         })
 
+        print "*** PROCESSING A"
+
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_a)
         object_a = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
         self.assertTrue('data-1' in decompress(object_a.data))
 
         # Now we only have object A in the blockchain. It has sub-chains, but there should be
         # no historic items for these chains.
-        # This means that we should load this object from the repostiory for the chain heads.
+        # This means that we should load this object from the repository for the chain heads.
         chain_heads_for_a = chain_repository.load_chain_heads_for_object(object_a)
+        print "heads for a" + repr(chain_heads_for_a)
 
-        self.check_chained_object_are_correct(chain_heads_for_a['history'], object_a)
-        self.check_chained_object_are_correct(chain_heads_for_a['otherchain'], object_a)
+
+        self.check_chained_object_are_correct(chain_heads_for_a['history'][0], object_a)
+        self.check_chained_object_are_correct(chain_heads_for_a['otherchain'][0], object_a)
+
+        print "*** PROCESSING B"
+
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_b)
         object_b = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
@@ -100,8 +107,13 @@ class ChainRepositoryTestCase(TeardownUnittest):
         chain_heads_for_b = chain_repository.load_chain_heads_for_object(object_b)
 
         # We're expecting to see 'history' : object_a, 'otherchain': object_a here
-        self.check_chained_object_are_correct(chain_heads_for_b['history'], object_b)
-        self.check_chained_object_are_correct(chain_heads_for_b['otherchain'], object_b)
+        self.check_chained_object_are_correct(chain_heads_for_b['history'][0], object_b)
+        self.check_chained_object_are_correct(chain_heads_for_b['history'][1], object_a)
+        self.check_chained_object_are_correct(chain_heads_for_b['otherchain'][0], object_b)
+        self.check_chained_object_are_correct(chain_heads_for_b['otherchain'][1], object_a)
+
+        print "*** PROCESSING C"
+
 
         blockchain_object_repository.store_object(object_id=test_object_id, data=data_for_c)
         object_c = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
@@ -109,8 +121,10 @@ class ChainRepositoryTestCase(TeardownUnittest):
 
         # Now lets load the head of the chain for object C
         chain_heads_for_c = chain_repository.load_chain_heads_for_object(object_c)
-        self.check_chained_object_are_correct(chain_heads_for_c['history'], object_c)
-        self.check_chained_object_are_correct(chain_heads_for_c['otherchain'], object_c)
+        self.check_chained_object_are_correct(chain_heads_for_c['history'][0], object_c)
+        self.check_chained_object_are_correct(chain_heads_for_c['history'][1], object_b)
+        self.check_chained_object_are_correct(chain_heads_for_c['otherchain'][0], object_c)
+        self.check_chained_object_are_correct(chain_heads_for_c['otherchain'][1], object_b)
 
 
     def check_chained_object_are_correct(self, got, expected):
