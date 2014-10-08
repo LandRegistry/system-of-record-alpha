@@ -23,7 +23,7 @@ valid_system_of_record_input_message_with_two_tags = unicoded({
     }
 })
 
-valid_message_without_tags = unicoded({
+invalid_message_without_chains = unicoded({
     'object': {
         'object_id': 'AB12345',
         'data': '<data>',

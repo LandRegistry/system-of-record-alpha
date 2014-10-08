@@ -6,14 +6,14 @@ from datatypes.core import unicoded
 from tests.teardown_unittest import TeardownUnittest
 from datatypes.exceptions import DataDoesNotMatchSchemaException
 
-test_object_id = valid_message_without_tags['object']['object_id']
+test_object_id = valid_system_of_record_input_message_with_two_tags['object']['object_id']
 
 
 class BlockchainObjectRepositoryTestCase(TeardownUnittest):
     def test_can_store_object_data(self):
         blockchain_object_repository.store_object(
             object_id=test_object_id,
-            data=valid_message_without_tags)
+            data=valid_system_of_record_input_message_with_two_tags)
 
         loaded_object = blockchain_object_repository.load_most_recent_object_with_id(test_object_id)
 
@@ -59,7 +59,7 @@ class BlockchainObjectRepositoryTestCase(TeardownUnittest):
 
     def test_cannot_store_title_with_title_id_not_matching_json_payload(self):
         self.assertRaises(InvalidTitleIdException, blockchain_object_repository.store_object, "foo",
-                          valid_message_without_tags)
+                          valid_system_of_record_input_message_with_two_tags)
 
 
     def check_chains_are_equal(self, loaded_data, expected_chains):

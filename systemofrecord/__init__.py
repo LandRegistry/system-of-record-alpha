@@ -34,11 +34,10 @@ app.logger.info("\nConfiguration\n%s\n" % app.config)
 def configure_health():
     from systemofrecord.health import Health
     from systemofrecord.repository import blockchain_object_repository
-    from systemofrecord.services import feeder_queue, ingest_queue, chain_queue
+    from systemofrecord.services import ingest_queue, chain_queue
 
     Health(app,
            checks=[blockchain_object_repository.health,
-                   feeder_queue.health,
                    ingest_queue.health,
                    chain_queue.health
            ])
