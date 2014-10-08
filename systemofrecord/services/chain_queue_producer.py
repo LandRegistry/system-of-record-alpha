@@ -15,10 +15,10 @@ class ChainQueueProducer(object):
             for chain_object in chains[chain_name]:
                 message_to_send = self.create_chain_method(chain_name, chain_object, originating_object)
 
-            system_of_record_chain_message_validator.validate(message_to_send)
-            self.logger.info("Adding to chain queue: " + repr(message_to_send))
-            chain_queue.add_to_queue(message_to_send)
-            self.logger.debug("Chain message sent: " + repr(message_to_send))
+                system_of_record_chain_message_validator.validate(message_to_send)
+                self.logger.info("Adding to chain queue: " + repr(message_to_send))
+                chain_queue.add_to_queue(message_to_send)
+                self.logger.debug("Chain message sent: " + repr(message_to_send))
 
 
     def create_chain_method(self, chain_name, chain_object, originating_object):

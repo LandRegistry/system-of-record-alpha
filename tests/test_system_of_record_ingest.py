@@ -43,7 +43,9 @@ class SystemOfRecordIngestTestCase(TeardownUnittest):
 
         # Now, we're expecting 2 items on the chain queue & db
         self.check_system_contains_a_number_of_messages(2)
-        self.check_chain_queue_contains_a_number_of_messages(4)
+        # 6 messages - the previous 2, and the new 4
+        # Why 4? It's 2 chains * 2 results per chain.
+        self.check_chain_queue_contains_a_number_of_messages(6)
 
     def test_cant_ingest_bad_record(self):
         self.check_system_is_empty()
