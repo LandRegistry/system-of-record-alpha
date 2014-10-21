@@ -1,3 +1,4 @@
+export SETTINGS='config.TestConfig'
 # Here we'll create a test database, and override the database to the test values.
 set +x
 set +o errexit

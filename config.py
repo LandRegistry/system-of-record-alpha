@@ -1,6 +1,5 @@
 import os
 
-
 class Config(object):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
@@ -9,12 +8,8 @@ class Config(object):
     CHAIN_QUEUE_NAME = os.environ['CHAIN_QUEUE_NAME']
     INGEST_QUEUE_POLL_INTERVAL_IN_SECONDS = float(os.environ['INGEST_QUEUE_POLL_INTERVAL_IN_SECONDS'])
 
-
 class DevelopmentConfig(Config):
     DEBUG = True
 
-
 class TestConfig(DevelopmentConfig):
     TESTING = True
-    DEBUG = True
-
