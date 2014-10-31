@@ -6,8 +6,11 @@ from raven.contrib.flask import Sentry
 
 app = Flask(__name__)
 app.config.from_object(os.environ.get('SETTINGS'))
-db = SQLAlchemy(app)
 
+from werkzeug.contrib.fixers import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+db = SQLAlchemy(app)
 
 def configure_logging(obj):
     logger = logging.getLogger(obj.__class__.__name__)
