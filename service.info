@@ -1,0 +1,17 @@
+{
+      "name": "system-of-record",
+      "type": "back-end",
+      "github": "https://github.com/LandRegistry/system-of-record",
+      "heroku": "lr-system-of-record",
+      "url": "http://lr-system-of-record.herokuapp.com/",
+      "port": 8000,
+      "database": "true",
+      "tech": [
+        "python",
+        "flask"
+      ],
+      "dependencies": [
+        "postgres",
+        "the-feeder"
+      ]
+}
